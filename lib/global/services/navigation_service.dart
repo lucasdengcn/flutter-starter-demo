@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class NavigationService {
   static final NavigationService _instance = NavigationService._internal();
@@ -8,24 +9,29 @@ class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<dynamic> navigateTo(String routeName, {dynamic arguments}) {
-    return navigatorKey.currentState!.pushNamed(
-      routeName,
-      arguments: arguments,
-    );
+    if (navigatorKey.currentContext == null) return Future.value();
+    return GoRouter.of(
+      navigatorKey.currentContext!,
+    ).push('/$routeName', extra: arguments);
   }
 
   Future<dynamic> navigateToReplacement(String routeName, {dynamic arguments}) {
-    return navigatorKey.currentState!.pushReplacementNamed(
-      routeName,
-      arguments: arguments,
-    );
+    if (navigatorKey.currentContext == null) return Future.value();
+    return GoRouter.of(
+      navigatorKey.currentContext!,
+    ).pushReplacement('/$routeName', extra: arguments);
   }
 
   void goBack() {
-    return navigatorKey.currentState!.pop();
+    if (navigatorKey.currentContext == null) return;
+    return GoRouter.of(navigatorKey.currentContext!).pop();
   }
 
   void popUntil(String routeName) {
-    navigatorKey.currentState!.popUntil(ModalRoute.withName(routeName));
+    // if (navigatorKey.currentContext == null) return;
+    // while (GoRouter.of(navigatorKey.currentContext!).canPop() &&
+    //     GoRouter.of(navigatorKey.currentContext!).location != '/$routeName') {
+    //   GoRouter.of(navigatorKey.currentContext!).pop();
+    // }
   }
 }

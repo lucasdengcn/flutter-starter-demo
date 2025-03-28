@@ -1,3 +1,4 @@
+import '../../../global/services/navigation_service.dart';
 import '../../../global/viewmodels/base_viewmodel.dart';
 import '../services/auth_service.dart';
 
@@ -5,9 +6,13 @@ enum SignupStep { phoneInput, otpVerification, nameInput, completed }
 
 class SignupViewModel extends BaseViewModel {
   final AuthService _authService;
+  final NavigationService _navigationService;
 
-  SignupViewModel({required AuthService authService})
-    : _authService = authService;
+  SignupViewModel({
+    required AuthService authService,
+    required NavigationService navigationService,
+  }) : _authService = authService,
+       _navigationService = navigationService;
 
   String _phoneNumber = '';
   String _otp = '';
@@ -124,6 +129,7 @@ class SignupViewModel extends BaseViewModel {
       if (success) {
         _currentStep = SignupStep.completed;
         _errorMessage = '';
+        // navigateToPrayerScreen();
       } else {
         _errorMessage = 'Failed to create profile. Please try again.';
       }
@@ -146,5 +152,10 @@ class SignupViewModel extends BaseViewModel {
     _errorMessage = '';
     _isLoading = false;
     notifyListeners();
+  }
+
+  // Navigate to prayer screen
+  void navigateToPrayerScreen() {
+    _navigationService.navigateTo('prayer');
   }
 }

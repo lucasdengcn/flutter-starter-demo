@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../../features/signup/viewmodels/signup_viewmodel.dart';
 
 class CompletedStep extends StatelessWidget {
   const CompletedStep({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SignupViewModel>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -23,7 +27,8 @@ class CompletedStep extends StatelessWidget {
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () {
-            context.go('/prayer');
+            // context.go('/prayer');
+            viewModel.navigateToPrayerScreen();
           },
           child: const Text('Continue to App'),
         ),

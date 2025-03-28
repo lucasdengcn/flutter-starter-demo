@@ -12,18 +12,14 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Consumer<SignupViewModel>(
-        builder: (context, viewModel, child) {
-          if (viewModel.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          return Padding(
+    return Consumer<SignupViewModel>(
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Sign Up'),
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
+          body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,9 +35,9 @@ class SignupScreen extends StatelessWidget {
                 _buildCurrentStep(context, viewModel),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
