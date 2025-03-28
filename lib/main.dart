@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'features/prayer/viewmodels/prayer_viewmodel.dart';
-import 'features/signup/viewmodels/signup_viewmodel.dart';
+import 'global/providers/providers.dart';
 import 'global/routes/app_router.dart';
 import 'global/services/service_locator.dart';
 
@@ -18,10 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => locator<PrayerViewModel>()),
-        ChangeNotifierProvider(create: (_) => SignupViewModel()),
-      ],
+      providers: AppProviders.getProviders(),
       child: MaterialApp.router(
         title: 'Ibadah',
         debugShowCheckedModeBanner: false,

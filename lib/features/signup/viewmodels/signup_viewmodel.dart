@@ -4,7 +4,10 @@ import '../services/auth_service.dart';
 enum SignupStep { phoneInput, otpVerification, nameInput, completed }
 
 class SignupViewModel extends BaseViewModel {
-  final AuthService _authService = AuthService();
+  final AuthService _authService;
+
+  SignupViewModel({required AuthService authService})
+    : _authService = authService;
 
   String _phoneNumber = '';
   String _otp = '';
