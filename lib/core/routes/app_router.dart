@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/screens/chat/chat_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
@@ -16,7 +18,7 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/video_player',
+    initialLocation: '/chat',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
@@ -62,6 +64,18 @@ class AppRouter {
             (context, state) => ChangeNotifierProvider(
               create: (_) => locator<VideoPlayerViewModel>(),
               child: const VideoPlayerScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/chat',
+        name: 'chat',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<ChatViewModel>(),
+              child: const ChatScreen(
+                userId: 'user123',
+                wsUrl: 'ws://ws.example.com',
+              ),
             ),
       ),
     ],

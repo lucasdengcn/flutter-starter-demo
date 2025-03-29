@@ -51,6 +51,11 @@ dependencies:
   chewie: ^1.7.5
   path_provider: ^2.1.2
   dio: ^5.4.1
+  web_socket_channel: ^3.0.2
+  flutter_chat_types: ^3.6.2
+  flutter_chat_ui: ^1.6.15
+  ulid: ^2.0.1
+  file_picker: ^9.2.3
 
 dev_dependencies:
   flutter_test:
