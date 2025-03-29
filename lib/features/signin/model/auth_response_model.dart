@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'auth_response_model.g.dart';
+
+@JsonSerializable()
 class AuthResponseModel {
   final bool success;
   final String? token;
@@ -13,15 +18,10 @@ class AuthResponseModel {
     this.data,
   });
 
-  factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
-    return AuthResponseModel(
-      success: json['success'] as bool? ?? false,
-      token: json['token'] as String?,
-      refreshToken: json['refreshToken'] as String?,
-      message: json['message'] as String?,
-      data: json['data'] as Map<String, dynamic>?,
-    );
-  }
+  factory AuthResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$AuthResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthResponseModelToJson(this);
 
   factory AuthResponseModel.error(String message) {
     return AuthResponseModel(success: false, message: message);
