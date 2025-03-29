@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
 import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/screens/charts/chart_screen.dart';
 import 'package:insurance_ws/screens/chat/chat_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +20,7 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/chat',
+    initialLocation: '/chart',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
@@ -76,6 +78,15 @@ class AppRouter {
                 userId: 'user123',
                 wsUrl: 'ws://ws.example.com',
               ),
+            ),
+      ),
+      GoRoute(
+        path: '/chart',
+        name: 'chart',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<ChartViewModel>(),
+              child: const ChartScreen(),
             ),
       ),
     ],
