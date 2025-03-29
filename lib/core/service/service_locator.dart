@@ -7,6 +7,7 @@ import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import 'api_client.dart';
+import 'cache_service.dart';
 import 'config_service.dart';
 import 'encryption_service.dart';
 import 'logger_service.dart';
@@ -27,6 +28,7 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<SecureStorageService>(
       () => SecureStorageService(),
     );
+    locator.registerLazySingleton<CacheService>(() => CacheService());
     locator.registerLazySingleton<EncryptionService>(() => EncryptionService());
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
