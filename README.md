@@ -1,6 +1,6 @@
-# Insurance WS
+# Flutter Starter Demo
 
-A Flutter mobile application for insurance agency workspace with a focus on clean architecture and modular design.
+A Flutter mobile application for starter with a focus on clean architecture and modular design.
 
 ## Tech Stack
 
