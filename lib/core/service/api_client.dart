@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import '../config/app_config.dart';
+import 'cache_service.dart';
 import 'config_service.dart';
 import 'logger_service.dart';
 import 'token_storage.dart';
@@ -18,6 +20,7 @@ class ApiClient {
   final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
   final LoggerService _logger = GetIt.instance<LoggerService>();
   final ConfigService _configService = GetIt.instance<ConfigService>();
+  final CacheService _cacheService = GetIt.instance<CacheService>();
 
   // Base URL for API calls from config service
   String get baseUrl => _configService.apiBaseUrl;
@@ -117,14 +120,47 @@ class ApiClient {
   }
 
   // GET request
-  Future<Map<String, dynamic>> get(String endpoint, {String? token}) async {
+  Future<Map<String, dynamic>> get(
+    String endpoint, {
+    String? token,
+    bool useCache = true,
+  }) async {
     try {
       final headers = await _getAuthHeaders(token);
+      final cacheKey = '$endpoint${token ?? ''}';
+
+      // Check cache if enabled
+      if (useCache) {
+        final cachedData = await _cacheService.getObject<Map<String, dynamic>>(
+          cacheKey,
+          (json) => json,
+        );
+        if (cachedData != null) {
+          _logger.d('Using cached data for: $endpoint');
+          return cachedData;
+        }
+      }
+
       final response = await http.get(
         Uri.parse('$baseUrl/$endpoint'),
         headers: headers,
       );
-      return _handleResponse(response);
+
+      final responseData = _handleResponse(response);
+
+      // Cache successful GET responses if enabled
+      if (useCache && response.statusCode >= 200 && response.statusCode < 300) {
+        await _cacheService.setObject(
+          cacheKey,
+          responseData,
+          expiration: Duration(
+            minutes: int.parse(AppConfig.defaultCacheMaxAge.toString()),
+          ),
+        );
+        _logger.d('Cached response for: $endpoint');
+      }
+
+      return responseData;
     } catch (e) {
       return _handleError(e);
     }
