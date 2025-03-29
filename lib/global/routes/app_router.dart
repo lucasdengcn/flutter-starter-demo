@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:insurance_ws/features/prayer/viewmodels/prayer_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../features/prayer/viewmodels/prayer_viewmodel.dart';
 import '../../features/signup/viewmodels/signup_viewmodel.dart';
 import '../../global/services/service_locator.dart';
 import '../../screens/prayer/prayer_screen.dart';
