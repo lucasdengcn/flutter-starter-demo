@@ -90,6 +90,20 @@ Each feature has its own dedicated service classes that encapsulate these respon
 2. Run `flutter pub get` to install dependencies
 3. Run `flutter run` to start the application
 
+## Security
+
+### Authentication & Token Management
+
+- **Secure Token Storage**: Implements encrypted storage using flutter_secure_storage
+- **Platform-Specific Encryption**: Uses Android EncryptedSharedPreferences and iOS Keychain
+- **JWT Token Management**: Handles secure storage and retrieval of authentication and refresh tokens
+
+### Data Protection
+
+- **Encrypted Storage**: All sensitive data is encrypted at rest
+- **Secure Communication**: API communications use HTTPS protocol
+- **Access Control**: Implements token-based authentication for protected endpoints
+
 ## Resources
 
 For help getting started with Flutter development, view the
