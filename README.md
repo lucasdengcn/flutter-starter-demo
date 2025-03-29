@@ -50,6 +50,17 @@ lib/
   └── main.dart        # Application entry point
 ```
 
+### Service Layer
+
+The service layer is a critical component of our architecture, responsible for:
+
+- **API Integration**: Handling all external API calls, including request formatting, response parsing, and error handling
+- **Business Logic**: Implementing core business rules and domain-specific logic
+- **Data Operations**: Managing data transformations, validations, and persistence
+- **State Management**: Providing data to ViewModels in a format ready for UI consumption
+
+Each feature has its own dedicated service classes that encapsulate these responsibilities, promoting separation of concerns and making the codebase more maintainable and testable.
+
 ## Features
 
 - **Authentication**
