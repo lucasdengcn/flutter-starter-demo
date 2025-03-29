@@ -9,6 +9,11 @@ A Flutter mobile application for starter with a focus on clean architecture and 
 - **Provider**: State management solution for Flutter applications
 - **GetIt**: Service locator for dependency injection
 - **Go Router**: Declarative routing package for Flutter that uses the Router API
+- **json_serializable**: Code generation for model serialization and deserialization
+- **flutter_secure_storage**: Secure storage implementation using platform-specific encryption
+- **flutter_dotenv**: Environment configuration management for multiple deployment environments
+- **flutter_screenutil**: Responsive UI adaptation for different screen sizes
+- **flutter_svg**: SVG rendering and manipulation support
 
 ## Architecture Pattern
 
@@ -65,9 +70,21 @@ Each feature has its own dedicated service classes that encapsulate these respon
 
 - **Authentication**
   - User signup with phone verification
-  - User signin
-- **Prayer**
-  - Prayer tracking and management
+  - User signin with secure token management
+  - JWT-based authentication flow
+  - Secure token storage using platform-specific encryption
+
+- **Prayer Tracking**
+  - Daily prayer schedule management
+  - Prayer time notifications
+  - Qibla direction indicator
+  - Prayer history tracking
+  - Custom prayer reminders
+
+- **Environment Configuration**
+  - Multiple environment support (.env files)
+  - Development, Staging, UAT, and Production environments
+  - Environment-specific API configurations
 
 ## Development Practices
 
@@ -89,6 +106,10 @@ Each feature has its own dedicated service classes that encapsulate these respon
 1. Clone the repository
 2. Run `flutter pub get` to install dependencies
 3. Run `flutter run` to start the application
+
+### Build Runner
+
+1. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate json_serializable files
 
 ## Security
 
