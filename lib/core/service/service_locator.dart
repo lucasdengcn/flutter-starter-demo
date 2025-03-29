@@ -6,17 +6,21 @@ import '../../features/signin/service/signin_auth_service.dart';
 import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
+import 'api_client.dart';
 import 'navigation_service.dart';
+import 'token_storage.dart';
 
 final GetIt locator = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
   try {
     // Register Services as Singletons
+    locator.registerLazySingleton<NavigationService>(() => NavigationService());
+    locator.registerLazySingleton<ApiClient>(() => ApiClient());
+    locator.registerLazySingleton<TokenStorage>(() => TokenStorage());
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
     locator.registerLazySingleton<PrayerService>(() => PrayerService());
-    locator.registerLazySingleton<NavigationService>(() => NavigationService());
 
     // Register ViewModels as Factories
     locator.registerFactory<PrayerViewModel>(

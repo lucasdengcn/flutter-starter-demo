@@ -1,0 +1,258 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
+
+import 'token_storage.dart';
+
+class ApiClient {
+  // Singleton instance
+  static final ApiClient _instance = ApiClient._internal();
+  factory ApiClient() => _instance;
+  ApiClient._internal();
+
+  // Get singleton instance from service locator
+  final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
+
+  // Base URL for API calls
+  final String baseUrl =
+      'https://api.example.com'; // Replace with your actual API URL
+
+  // Headers for API calls
+  Map<String, String> get _headers => {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
+  // Add auth token to headers if available
+  Future<Map<String, String>> _getAuthHeaders(String? token) async {
+    final headers = Map<String, String>.from(_headers);
+
+    // If token is provided, use it directly
+    if (token != null) {
+      headers['Authorization'] = 'Bearer $token';
+      return headers;
+    }
+
+    // Otherwise, check if we have a stored token
+    final storedToken = _tokenStorage.token;
+    if (storedToken != null) {
+      // Check if token is valid or needs refresh
+      final jwtToken = _tokenStorage.jwtToken;
+      if (jwtToken == null || jwtToken.shouldRefresh) {
+        // Token is expired or about to expire, try to refresh it
+        final refreshed = await _refreshToken();
+        if (!refreshed) {
+          // If refresh failed and token is expired, return headers without token
+          if (jwtToken == null || jwtToken.isExpired) {
+            return headers;
+          }
+          // If token is about to expire but not yet expired, we can still use it
+        }
+      }
+
+      // Add the valid token to headers
+      headers['Authorization'] = 'Bearer ${_tokenStorage.token}';
+    }
+
+    return headers;
+  }
+
+  // Refresh the token using refresh token
+  Future<bool> _refreshToken() async {
+    final refreshToken = _tokenStorage.refreshToken;
+    if (refreshToken == null) {
+      if (kDebugMode) {
+        print('No refresh token available');
+      }
+      return false;
+    }
+
+    try {
+      if (kDebugMode) {
+        print('Attempting to refresh token');
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/refresh'),
+        headers: _headers,
+        body: jsonEncode({'refreshToken': refreshToken}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final newToken = data['token'] as String?;
+        final newRefreshToken = data['refreshToken'] as String?;
+
+        if (newToken != null) {
+          if (newRefreshToken != null) {
+            _tokenStorage.setTokens(newToken, newRefreshToken);
+            if (kDebugMode) {
+              print('Token and refresh token updated successfully');
+            }
+          } else {
+            _tokenStorage.setToken(newToken);
+            if (kDebugMode) {
+              print('Token updated successfully, using existing refresh token');
+            }
+          }
+          return true;
+        } else {
+          if (kDebugMode) {
+            print('Refresh response did not contain a new token');
+          }
+        }
+      } else {
+        if (kDebugMode) {
+          print(
+            'Token refresh failed with status code: ${response.statusCode}',
+          );
+          try {
+            final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+            print('Error message: ${errorData['message']}');
+          } catch (_) {}
+        }
+      }
+
+      // If we reach here, refresh failed
+      return false;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error refreshing token: $e');
+      }
+      return false;
+    }
+  }
+
+  // GET request
+  Future<Map<String, dynamic>> get(String endpoint, {String? token}) async {
+    try {
+      final headers = await _getAuthHeaders(token);
+      final response = await http.get(
+        Uri.parse('$baseUrl/$endpoint'),
+        headers: headers,
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // POST request
+  Future<Map<String, dynamic>> post(
+    String endpoint,
+    Map<String, dynamic> data, {
+    String? token,
+  }) async {
+    try {
+      final headers = await _getAuthHeaders(token);
+      final response = await http.post(
+        Uri.parse('$baseUrl/$endpoint'),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // PUT request
+  Future<Map<String, dynamic>> put(
+    String endpoint,
+    Map<String, dynamic> data, {
+    String? token,
+  }) async {
+    try {
+      final headers = await _getAuthHeaders(token);
+      final response = await http.put(
+        Uri.parse('$baseUrl/$endpoint'),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // DELETE request
+  Future<Map<String, dynamic>> delete(String endpoint, {String? token}) async {
+    try {
+      final headers = await _getAuthHeaders(token);
+      final response = await http.delete(
+        Uri.parse('$baseUrl/$endpoint'),
+        headers: headers,
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
+  // Handle API response
+  Map<String, dynamic> _handleResponse(http.Response response) {
+    if (kDebugMode) {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) {
+        return {'success': true};
+      }
+      try {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } catch (e) {
+        return {'success': false, 'message': 'Failed to parse response'};
+      }
+    } else if (response.statusCode == 401) {
+      // Unauthorized - token might be invalid
+      _tokenStorage.clearToken();
+      return {
+        'success': false,
+        'message': 'Authentication failed. Please log in again.',
+        'auth_error': true,
+      };
+    } else {
+      try {
+        final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+        return {
+          'success': false,
+          'message':
+              errorData['message'] ??
+              'Request failed with status: ${response.statusCode}',
+          'data': errorData,
+        };
+      } catch (e) {
+        return {
+          'success': false,
+          'message': 'Request failed with status: ${response.statusCode}',
+        };
+      }
+    }
+  }
+
+  // Handle errors
+  Map<String, dynamic> _handleError(dynamic error) {
+    if (kDebugMode) {
+      print('Error: $error');
+    }
+
+    String message = 'An unexpected error occurred';
+
+    if (error is SocketException) {
+      message = 'No internet connection';
+    } else if (error is FormatException) {
+      message = 'Invalid response format';
+    } else if (error is HttpException) {
+      message = 'HTTP error occurred';
+    } else if (error is http.ClientException) {
+      message = 'Request timeout';
+    }
+
+    return {'success': false, 'message': message};
+  }
+}

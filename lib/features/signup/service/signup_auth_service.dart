@@ -1,4 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../core/service/api_client.dart';
+import '../../../core/service/token_storage.dart';
+import '../../../features/signin/model/auth_response_model.dart';
+import '../model/user_model.dart';
 
 class SignupAuthService {
   // Singleton instance
@@ -6,15 +12,27 @@ class SignupAuthService {
   factory SignupAuthService() => _instance;
   SignupAuthService._internal();
 
-  // Mock OTP verification - in production, this would integrate with a real SMS service
+  // Get singleton instances from service locator
+  final ApiClient _apiClient = GetIt.instance<ApiClient>();
+  final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
+
+  // Send OTP via API
   Future<bool> sendOTP(String phoneNumber) async {
     try {
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
+      final response = await _apiClient.post('auth/send-otp', {
+        'phoneNumber': phoneNumber,
+      });
+
+      final authResponse = AuthResponseModel.fromJson(response);
+
       if (kDebugMode) {
-        print('OTP sent to $phoneNumber');
+        print('OTP request result: ${authResponse.success}');
+        if (!authResponse.success) {
+          print('Error message: ${authResponse.message}');
+        }
       }
-      return true;
+
+      return authResponse.success;
     } catch (e) {
       if (kDebugMode) {
         print('Error sending OTP: $e');
@@ -23,19 +41,24 @@ class SignupAuthService {
     }
   }
 
-  // Mock OTP verification
+  // Verify OTP via API
   Future<bool> verifyOTP(String phoneNumber, String otp) async {
     try {
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
-      // For testing, any 6-digit OTP is considered valid
-      bool isValid = otp.length == 6 && int.tryParse(otp) != null;
+      final response = await _apiClient.post('auth/verify-otp', {
+        'phoneNumber': phoneNumber,
+        'otpCode': otp,
+      });
+
+      final authResponse = AuthResponseModel.fromJson(response);
+
       if (kDebugMode) {
-        print(
-          'OTP verification ${isValid ? 'successful' : 'failed'} for $phoneNumber',
-        );
+        print('OTP verification result: ${authResponse.success}');
+        if (!authResponse.success) {
+          print('Error message: ${authResponse.message}');
+        }
       }
-      return isValid;
+
+      return authResponse.success;
     } catch (e) {
       if (kDebugMode) {
         print('Error verifying OTP: $e');
@@ -44,15 +67,40 @@ class SignupAuthService {
     }
   }
 
-  // Create user profile
+  // Create user profile via API
   Future<bool> createUserProfile(String phoneNumber, String name) async {
     try {
-      // Simulate API call delay
-      await Future.delayed(const Duration(seconds: 1));
-      if (kDebugMode) {
-        print('User profile created for $name with phone $phoneNumber');
+      final userModel = UserModel(
+        name: name,
+        phoneNumber: phoneNumber,
+        isVerified: true,
+      );
+
+      final response = await _apiClient.post('auth/signup', userModel.toJson());
+
+      final authResponse = AuthResponseModel.fromJson(response);
+
+      if (authResponse.success && authResponse.token != null) {
+        // Store the token for future authenticated requests
+        if (authResponse.refreshToken != null) {
+          _tokenStorage.setTokens(
+            authResponse.token!,
+            authResponse.refreshToken!,
+          );
+        } else {
+          _tokenStorage.setToken(authResponse.token!);
+        }
+
+        if (kDebugMode) {
+          print('User profile created for $name with phone $phoneNumber');
+        }
+        return true;
+      } else {
+        if (kDebugMode) {
+          print('Failed to create user profile: ${authResponse.message}');
+        }
+        return false;
       }
-      return true;
     } catch (e) {
       if (kDebugMode) {
         print('Error creating user profile: $e');
