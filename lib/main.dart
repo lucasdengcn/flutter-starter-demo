@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'core/providers/providers.dart';
 import 'core/routes/app_router.dart';
 import 'core/service/service_locator.dart';
 
-void main() {
+Future<void> main() async {
+  // Load .env file (this file is copied from environment-specific .env files during build)
+  await dotenv.load(fileName: '.env');
+
+  // Setup service locator
   setupServiceLocator();
+
   runApp(const MyApp());
 }
 

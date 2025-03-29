@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'config_service.dart';
 import 'logger_service.dart';
 import 'token_storage.dart';
 
@@ -16,10 +17,10 @@ class ApiClient {
   // Get singleton instances from service locator
   final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
   final LoggerService _logger = GetIt.instance<LoggerService>();
+  final ConfigService _configService = GetIt.instance<ConfigService>();
 
-  // Base URL for API calls
-  final String baseUrl =
-      'https://api.example.com'; // Replace with your actual API URL
+  // Base URL for API calls from config service
+  String get baseUrl => _configService.apiBaseUrl;
 
   // Headers for API calls
   Map<String, String> get _headers => {

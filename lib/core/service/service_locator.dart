@@ -7,6 +7,7 @@ import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import 'api_client.dart';
+import 'config_service.dart';
 import 'logger_service.dart';
 import 'navigation_service.dart';
 import 'token_storage.dart';
@@ -17,12 +18,16 @@ Future<void> setupServiceLocator() async {
   try {
     // Register Services as Singletons
     locator.registerLazySingleton<LoggerService>(() => LoggerService());
+    locator.registerLazySingleton<ConfigService>(() => ConfigService());
     locator.registerLazySingleton<NavigationService>(() => NavigationService());
     locator.registerLazySingleton<ApiClient>(() => ApiClient());
     locator.registerLazySingleton<TokenStorage>(() => TokenStorage());
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
     locator.registerLazySingleton<PrayerService>(() => PrayerService());
+
+    // Initialize ConfigService
+    locator<ConfigService>();
 
     // Register ViewModels as Factories
     locator.registerFactory<PrayerViewModel>(
