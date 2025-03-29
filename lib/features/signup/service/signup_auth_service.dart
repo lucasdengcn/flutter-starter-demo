@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../core/service/api_client.dart';
+import '../../../core/service/logger_service.dart';
 import '../../../core/service/token_storage.dart';
 import '../../../features/signin/model/auth_response_model.dart';
 import '../model/user_model.dart';
@@ -15,6 +15,7 @@ class SignupAuthService {
   // Get singleton instances from service locator
   final ApiClient _apiClient = GetIt.instance<ApiClient>();
   final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
+  final LoggerService _logger = GetIt.instance<LoggerService>();
 
   // Send OTP via API
   Future<bool> sendOTP(String phoneNumber) async {
@@ -25,18 +26,14 @@ class SignupAuthService {
 
       final authResponse = AuthResponseModel.fromJson(response);
 
-      if (kDebugMode) {
-        print('OTP request result: ${authResponse.success}');
-        if (!authResponse.success) {
-          print('Error message: ${authResponse.message}');
-        }
+      _logger.d('OTP request result: ${authResponse.success}');
+      if (!authResponse.success) {
+        _logger.e('Error message: ${authResponse.message}');
       }
 
       return authResponse.success;
     } catch (e) {
-      if (kDebugMode) {
-        print('Error sending OTP: $e');
-      }
+      _logger.e('Error sending OTP', e);
       return false;
     }
   }
@@ -51,18 +48,14 @@ class SignupAuthService {
 
       final authResponse = AuthResponseModel.fromJson(response);
 
-      if (kDebugMode) {
-        print('OTP verification result: ${authResponse.success}');
-        if (!authResponse.success) {
-          print('Error message: ${authResponse.message}');
-        }
+      _logger.d('OTP verification result: ${authResponse.success}');
+      if (!authResponse.success) {
+        _logger.e('Error message: ${authResponse.message}');
       }
 
       return authResponse.success;
     } catch (e) {
-      if (kDebugMode) {
-        print('Error verifying OTP: $e');
-      }
+      _logger.e('Error verifying OTP', e);
       return false;
     }
   }
@@ -91,20 +84,14 @@ class SignupAuthService {
           _tokenStorage.setToken(authResponse.token!);
         }
 
-        if (kDebugMode) {
-          print('User profile created for $name with phone $phoneNumber');
-        }
+        _logger.d('User profile created for $name with phone $phoneNumber');
         return true;
       } else {
-        if (kDebugMode) {
-          print('Failed to create user profile: ${authResponse.message}');
-        }
+        _logger.e('Failed to create user profile: ${authResponse.message}');
         return false;
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error creating user profile: $e');
-      }
+      _logger.e('Error creating user profile', e);
       return false;
     }
   }

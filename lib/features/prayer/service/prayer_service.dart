@@ -1,8 +1,13 @@
+import 'package:get_it/get_it.dart';
+
+import '../../../core/service/logger_service.dart';
 import '../model/prayer_time.dart';
 
 class PrayerService {
   bool _isInitialized = false;
   List<PrayerTime> _cachedPrayerTimes = [];
+
+  final LoggerService _logger = GetIt.instance<LoggerService>();
 
   Future<void> init() async {
     if (_isInitialized) return;

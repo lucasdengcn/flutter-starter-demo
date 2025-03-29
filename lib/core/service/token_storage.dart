@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 import '../model/jwt_token_model.dart';
+import '../service/logger_service.dart';
 
 /// A token storage service for managing JWT authentication tokens.
 /// In a production app, this would use secure storage like flutter_secure_storage.
@@ -9,6 +10,9 @@ class TokenStorage {
   static final TokenStorage _instance = TokenStorage._internal();
   factory TokenStorage() => _instance;
   TokenStorage._internal();
+
+  // Get logger instance from service locator
+  final LoggerService _logger = GetIt.instance<LoggerService>();
 
   String? _authToken;
   JwtTokenModel? _jwtTokenModel;
@@ -28,14 +32,10 @@ class TokenStorage {
     _authToken = token;
     try {
       _jwtTokenModel = JwtTokenModel(token);
-      if (kDebugMode) {
-        print('JWT Token stored successfully');
-        print('Token expires at: ${_jwtTokenModel?.expirationDate}');
-      }
+      _logger.i('JWT Token stored successfully');
+      _logger.i('Token expires at: ${_jwtTokenModel?.expirationDate}');
     } catch (e) {
-      if (kDebugMode) {
-        print('Error decoding JWT token: $e');
-      }
+      _logger.e('Error decoding JWT token', e);
       _jwtTokenModel = null;
     }
   }
@@ -44,9 +44,7 @@ class TokenStorage {
   void setTokens(String token, String refreshToken) {
     setToken(token);
     _refreshToken = refreshToken;
-    if (kDebugMode) {
-      print('Refresh token stored successfully');
-    }
+    _logger.d('Refresh token stored successfully');
   }
 
   // Clear the auth token
@@ -54,9 +52,7 @@ class TokenStorage {
     _authToken = null;
     _jwtTokenModel = null;
     _refreshToken = null;
-    if (kDebugMode) {
-      print('Tokens cleared');
-    }
+    _logger.d('Tokens cleared');
   }
 
   // Check if user is authenticated
@@ -68,9 +64,7 @@ class TokenStorage {
     try {
       return !_jwtTokenModel!.isExpired;
     } catch (e) {
-      if (kDebugMode) {
-        print('Error validating token: $e');
-      }
+      _logger.e('Error validating token', e);
       return false;
     }
   }
@@ -81,9 +75,7 @@ class TokenStorage {
     try {
       return _jwtTokenModel!.shouldRefresh;
     } catch (e) {
-      if (kDebugMode) {
-        print('Error checking if token should be refreshed: $e');
-      }
+      _logger.e('Error checking if token should be refreshed', e);
       return true; // If there's an error, better to try refreshing
     }
   }

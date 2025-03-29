@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import 'logger_service.dart';
 import 'token_storage.dart';
 
 class ApiClient {
@@ -13,8 +13,9 @@ class ApiClient {
   factory ApiClient() => _instance;
   ApiClient._internal();
 
-  // Get singleton instance from service locator
+  // Get singleton instances from service locator
   final TokenStorage _tokenStorage = GetIt.instance<TokenStorage>();
+  final LoggerService _logger = GetIt.instance<LoggerService>();
 
   // Base URL for API calls
   final String baseUrl =
@@ -64,16 +65,12 @@ class ApiClient {
   Future<bool> _refreshToken() async {
     final refreshToken = _tokenStorage.refreshToken;
     if (refreshToken == null) {
-      if (kDebugMode) {
-        print('No refresh token available');
-      }
+      _logger.w('No refresh token available');
       return false;
     }
 
     try {
-      if (kDebugMode) {
-        print('Attempting to refresh token');
-      }
+      _logger.d('Attempting to refresh token');
 
       final response = await http.post(
         Uri.parse('$baseUrl/auth/refresh'),
@@ -89,39 +86,31 @@ class ApiClient {
         if (newToken != null) {
           if (newRefreshToken != null) {
             _tokenStorage.setTokens(newToken, newRefreshToken);
-            if (kDebugMode) {
-              print('Token and refresh token updated successfully');
-            }
+            _logger.i('Token and refresh token updated successfully');
           } else {
             _tokenStorage.setToken(newToken);
-            if (kDebugMode) {
-              print('Token updated successfully, using existing refresh token');
-            }
+            _logger.i(
+              'Token updated successfully, using existing refresh token',
+            );
           }
           return true;
         } else {
-          if (kDebugMode) {
-            print('Refresh response did not contain a new token');
-          }
+          _logger.w('Refresh response did not contain a new token');
         }
       } else {
-        if (kDebugMode) {
-          print(
-            'Token refresh failed with status code: ${response.statusCode}',
-          );
-          try {
-            final errorData = jsonDecode(response.body) as Map<String, dynamic>;
-            print('Error message: ${errorData['message']}');
-          } catch (_) {}
-        }
+        _logger.e(
+          'Token refresh failed with status code: ${response.statusCode}',
+        );
+        try {
+          final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+          _logger.e('Error message: ${errorData['message']}');
+        } catch (_) {}
       }
 
       // If we reach here, refresh failed
       return false;
     } catch (e) {
-      if (kDebugMode) {
-        print('Error refreshing token: $e');
-      }
+      _logger.e('Error refreshing token', e);
       return false;
     }
   }
@@ -194,10 +183,8 @@ class ApiClient {
 
   // Handle API response
   Map<String, dynamic> _handleResponse(http.Response response) {
-    if (kDebugMode) {
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
+    _logger.d('Response status: ${response.statusCode}');
+    _logger.d('Response body: ${response.body}');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       if (response.body.isEmpty) {
@@ -237,9 +224,7 @@ class ApiClient {
 
   // Handle errors
   Map<String, dynamic> _handleError(dynamic error) {
-    if (kDebugMode) {
-      print('Error: $error');
-    }
+    _logger.e('API request error', error);
 
     String message = 'An unexpected error occurred';
 
