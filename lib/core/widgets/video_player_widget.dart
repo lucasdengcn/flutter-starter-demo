@@ -56,6 +56,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         looping: widget.looping,
         allowedScreenSleep: false,
         showControlsOnInitialize: false,
+        allowFullScreen: true,
+        allowPlaybackSpeedChanging: false,
+        isLive: false,
         materialProgressColors: ChewieProgressColors(
           playedColor: Colors.red,
           handleColor: Colors.red,
