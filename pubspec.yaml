@@ -47,6 +47,10 @@ dependencies:
   json_annotation: ^4.9.0
   image_picker: ^1.0.7
   cached_network_image: ^3.2.3
+  video_player: ^2.8.2
+  chewie: ^1.7.5
+  path_provider: ^2.1.2
+  dio: ^5.4.1
 
 dev_dependencies:
   flutter_test:

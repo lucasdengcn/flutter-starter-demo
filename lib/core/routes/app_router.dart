@@ -5,16 +5,18 @@ import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
+import '../../features/video_player/viewmodel/video_player_viewmodel.dart';
 import '../../screens/image_picker/image_picker_screen.dart';
 import '../../screens/prayer/prayer_screen.dart';
 import '../../screens/signin/signin_screen.dart';
 import '../../screens/signup/signup_screen.dart';
+import '../../screens/video_player/video_player_screen.dart';
 import '../service/navigation_service.dart';
 import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/image_picker',
+    initialLocation: '/video_player',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
@@ -51,6 +53,15 @@ class AppRouter {
             (context, state) => ChangeNotifierProvider(
               create: (_) => locator<ImagePickerViewModel>(),
               child: const ImagePickerScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/video_player',
+        name: 'video_player',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<VideoPlayerViewModel>(),
+              child: const VideoPlayerScreen(),
             ),
       ),
     ],

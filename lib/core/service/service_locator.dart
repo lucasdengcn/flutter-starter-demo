@@ -8,6 +8,7 @@ import '../../features/signin/service/signin_auth_service.dart';
 import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
+import '../../features/video_player/viewmodel/video_player_viewmodel.dart';
 import 'api_client.dart';
 import 'cache_service.dart';
 import 'config_service.dart';
@@ -59,6 +60,7 @@ Future<void> setupServiceLocator() async {
     locator.registerFactory<ImagePickerViewModel>(
       () => ImagePickerViewModel(locator<ImageService>()),
     );
+    locator.registerFactory(() => VideoPlayerViewModel());
 
     // Initialize Services if needed
     await locator<PrayerService>().init();

@@ -73,18 +73,73 @@ Each feature has its own dedicated service classes that encapsulate these respon
   - User signin with secure token management
   - JWT-based authentication flow
   - Secure token storage using platform-specific encryption
-
-- **Prayer Tracking**
-  - Daily prayer schedule management
-  - Prayer time notifications
-  - Qibla direction indicator
-  - Prayer history tracking
-  - Custom prayer reminders
+  - Token refresh mechanism
 
 - **Environment Configuration**
   - Multiple environment support (.env files)
   - Development, Staging, UAT, and Production environments
   - Environment-specific API configurations
+
+- **Responsive Design**
+  - Adaptive layout for different screen sizes
+  - Responsive UI components using flutter_screenutil
+  - SVG rendering and manipulation using flutter_svg
+
+- **Localization**
+  - Supports multiple languages
+  - Language selection and translation management
+
+- **Error Handling**
+  - Global error handling mechanism
+  - Custom error types and messages
+  - Error logging and reporting
+
+- **Unit Testing**
+  - Comprehensive unit test coverage for critical components
+  - Mocking and stubbing for external dependencies
+  - Test-driven development (TDD) approach
+
+- **Image Picker**
+  - Allows users to select and upload images from their device
+  - Image compression and optimization
+
+- **QR Code Generation**
+  - Generates QR codes for sharing and scanning
+  - QR code scanning functionality
+
+- **Notification System**
+  - Push notifications for upcoming events and reminders
+  - Local notifications for timely reminders
+
+- **User Profile**
+  - User profile management
+  - Profile picture upload and display
+  - User information editing
+
+- **Video Player**
+  - Plays videos from URLs or local sources
+  - Video playback controls
+  - Video quality selection
+
+- **Audio Player**
+  - Plays audio files from URLs or local sources
+  - Audio playback controls
+  - Audio quality selection
+
+- **Background Services**
+  - Runs in the background for location tracking and notification scheduling
+
+- **Charts**
+  - Displays data using charts
+  - Customizable chart types and styles
+
+- **Real time**
+  - Connects to a WebSocket server for real-time data updates
+  - SSE (Server-Sent Events) support
+
+- **Geolocation**
+  - Retrieves user's current location
+  - Displays location information on the map
 
 ## Development Practices
 
