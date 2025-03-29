@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/signup/viewmodels/signup_viewmodel.dart';
+import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import 'completed_step.dart';
 import 'name_input_step.dart';
 import 'otp_verification_step.dart';

@@ -1,15 +1,15 @@
-import '../../../global/services/navigation_service.dart';
-import '../../../global/viewmodels/base_viewmodel.dart';
-import '../services/auth_service.dart';
+import '../../../global/service/navigation_service.dart';
+import '../../../global/viewmodel/base_viewmodel.dart';
+import '../service/signup_auth_service.dart';
 
 enum SignupStep { phoneInput, otpVerification, nameInput, completed }
 
 class SignupViewModel extends BaseViewModel {
-  final AuthService _authService;
+  final SignupAuthService _authService;
   final NavigationService _navigationService;
 
   SignupViewModel({
-    required AuthService authService,
+    required SignupAuthService authService,
     required NavigationService navigationService,
   }) : _authService = authService,
        _navigationService = navigationService;

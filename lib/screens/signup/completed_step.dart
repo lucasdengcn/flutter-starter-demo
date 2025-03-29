@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/signup/viewmodels/signup_viewmodel.dart';
+import '../../features/signup/viewmodel/signup_viewmodel.dart';
 
 class CompletedStep extends StatelessWidget {
   const CompletedStep({super.key});

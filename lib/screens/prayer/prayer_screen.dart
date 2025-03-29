@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/prayer/viewmodels/prayer_viewmodel.dart';
+import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/top_app_bar.dart';
 import 'widgets/content_recommendations.dart';

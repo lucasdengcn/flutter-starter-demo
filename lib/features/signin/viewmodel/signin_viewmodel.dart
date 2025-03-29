@@ -1,6 +1,6 @@
-import '../../../global/services/navigation_service.dart';
-import '../../../global/viewmodels/base_viewmodel.dart';
-import '../services/auth_service.dart';
+import '../../../global/service/navigation_service.dart';
+import '../../../global/viewmodel/base_viewmodel.dart';
+import '../service/signin_auth_service.dart';
 
 class SigninViewModel extends BaseViewModel {
   final SigninAuthService _authService;

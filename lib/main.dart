@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'global/providers/providers.dart';
 import 'global/routes/app_router.dart';
-import 'global/services/service_locator.dart';
+import 'global/service/service_locator.dart';
 
 void main() {
   setupServiceLocator();

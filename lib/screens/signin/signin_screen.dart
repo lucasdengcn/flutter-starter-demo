@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/signin/viewmodels/signin_viewmodel.dart';
+import '../../features/signin/viewmodel/signin_viewmodel.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});

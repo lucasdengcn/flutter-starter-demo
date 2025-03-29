@@ -1,4 +1,4 @@
-import '../models/prayer_time.dart';
+import '../model/prayer_time.dart';
 
 class PrayerService {
   bool _isInitialized = false;

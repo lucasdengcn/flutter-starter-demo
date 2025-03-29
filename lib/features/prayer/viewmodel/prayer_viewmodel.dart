@@ -1,6 +1,6 @@
-import '../../../global/viewmodels/base_viewmodel.dart';
-import '../models/prayer_time.dart';
-import '../services/prayer_service.dart';
+import '../../../global/viewmodel/base_viewmodel.dart';
+import '../model/prayer_time.dart';
+import '../service/prayer_service.dart';
 
 enum PrayerViewState { initial, loading, loaded, error }
 

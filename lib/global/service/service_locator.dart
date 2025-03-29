@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
-import 'package:insurance_ws/features/signup/viewmodels/signup_viewmodel.dart';
 
-import '../../features/prayer/services/prayer_service.dart';
-import '../../features/prayer/viewmodels/prayer_viewmodel.dart';
-import '../../features/signin/services/auth_service.dart';
-import '../../features/signin/viewmodels/signin_viewmodel.dart';
-import '../../features/signup/services/auth_service.dart';
+import '../../features/prayer/service/prayer_service.dart';
+import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
+import '../../features/signin/service/signin_auth_service.dart';
+import '../../features/signin/viewmodel/signin_viewmodel.dart';
+import '../../features/signup/service/signup_auth_service.dart';
+import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import 'navigation_service.dart';
 
 final GetIt locator = GetIt.instance;
@@ -13,7 +13,7 @@ final GetIt locator = GetIt.instance;
 Future<void> setupServiceLocator() async {
   try {
     // Register Services as Singletons
-    locator.registerLazySingleton<AuthService>(() => AuthService());
+    locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
     locator.registerLazySingleton<PrayerService>(() => PrayerService());
     locator.registerLazySingleton<NavigationService>(() => NavigationService());
@@ -24,7 +24,7 @@ Future<void> setupServiceLocator() async {
     );
     locator.registerFactory<SignupViewModel>(
       () => SignupViewModel(
-        authService: locator<AuthService>(),
+        authService: locator<SignupAuthService>(),
         navigationService: locator<NavigationService>(),
       ),
     );
