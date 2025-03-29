@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 
+import '../../features/image_picker/service/image_service.dart';
+import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
 import '../../features/prayer/service/prayer_service.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../features/signin/service/signin_auth_service.dart';
@@ -19,6 +21,7 @@ final GetIt locator = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
   try {
+    locator.registerLazySingleton<ImageService>(() => ImageService());
     // Register Services as Singletons
     locator.registerLazySingleton<LoggerService>(() => LoggerService());
     locator.registerLazySingleton<ConfigService>(() => ConfigService());
@@ -52,6 +55,9 @@ Future<void> setupServiceLocator() async {
         authService: locator<SigninAuthService>(),
         navigationService: locator<NavigationService>(),
       ),
+    );
+    locator.registerFactory<ImagePickerViewModel>(
+      () => ImagePickerViewModel(locator<ImageService>()),
     );
 
     // Initialize Services if needed
