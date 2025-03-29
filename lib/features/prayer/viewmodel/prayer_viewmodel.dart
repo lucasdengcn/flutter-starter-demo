@@ -1,4 +1,4 @@
-import '../../../global/viewmodel/base_viewmodel.dart';
+import '../../../core/viewmodel/base_viewmodel.dart';
 import '../model/prayer_time.dart';
 import '../service/prayer_service.dart';
 

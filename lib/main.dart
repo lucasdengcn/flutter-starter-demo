@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'global/providers/providers.dart';
-import 'global/routes/app_router.dart';
-import 'global/service/service_locator.dart';
+import 'core/providers/providers.dart';
+import 'core/routes/app_router.dart';
+import 'core/service/service_locator.dart';
 
 void main() {
   setupServiceLocator();
