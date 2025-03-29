@@ -8,8 +8,10 @@ import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import 'api_client.dart';
 import 'config_service.dart';
+import 'encryption_service.dart';
 import 'logger_service.dart';
 import 'navigation_service.dart';
+import 'secure_storage_service.dart';
 import 'token_storage.dart';
 
 final GetIt locator = GetIt.instance;
@@ -22,6 +24,10 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<NavigationService>(() => NavigationService());
     locator.registerLazySingleton<ApiClient>(() => ApiClient());
     locator.registerLazySingleton<TokenStorage>(() => TokenStorage());
+    locator.registerLazySingleton<SecureStorageService>(
+      () => SecureStorageService(),
+    );
+    locator.registerLazySingleton<EncryptionService>(() => EncryptionService());
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
     locator.registerLazySingleton<PrayerService>(() => PrayerService());

@@ -198,7 +198,7 @@ class ApiClient {
       }
     } else if (response.statusCode == 401) {
       // Unauthorized - token might be invalid
-      _tokenStorage.clearToken();
+      _tokenStorage.clearTokens();
       return {
         'success': false,
         'message': 'Authentication failed. Please log in again.',
