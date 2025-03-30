@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 
+import '../../features/article/service/article_service.dart';
+import '../../features/article/viewmodel/article_viewmodel.dart';
 import '../../features/image_picker/service/image_service.dart';
 import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
 import '../../features/prayer/service/prayer_service.dart';
@@ -37,7 +39,7 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
     locator.registerLazySingleton<PrayerService>(() => PrayerService());
-
+    locator.registerLazySingleton<ArticleService>(() => ArticleService());
     // Initialize ConfigService
     locator<ConfigService>();
 
@@ -61,6 +63,9 @@ Future<void> setupServiceLocator() async {
       () => ImagePickerViewModel(locator<ImageService>()),
     );
     locator.registerFactory(() => VideoPlayerViewModel());
+    locator.registerFactory<ArticleViewModel>(
+      () => ArticleViewModel(articleService: locator<ArticleService>()),
+    );
 
     // Initialize Services if needed
     await locator<PrayerService>().init();

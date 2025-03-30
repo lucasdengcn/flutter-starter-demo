@@ -5,11 +5,14 @@ import 'package:insurance_ws/screens/charts/chart_screen.dart';
 import 'package:insurance_ws/screens/chat/chat_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../features/article/viewmodel/article_viewmodel.dart';
 import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import '../../features/video_player/viewmodel/video_player_viewmodel.dart';
+import '../../screens/article/article_detail_screen.dart';
+import '../../screens/article/article_list_screen.dart';
 import '../../screens/image_picker/image_picker_screen.dart';
 import '../../screens/prayer/prayer_screen.dart';
 import '../../screens/signin/signin_screen.dart';
@@ -20,7 +23,7 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/chart',
+    initialLocation: '/article/list',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
@@ -66,6 +69,27 @@ class AppRouter {
             (context, state) => ChangeNotifierProvider(
               create: (_) => locator<VideoPlayerViewModel>(),
               child: const VideoPlayerScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/article/list',
+        name: 'article-list',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<ArticleViewModel>(),
+              child: const ArticleListScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/article/detail/:id',
+        name: 'article-detail',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create:
+                  (_) =>
+                      locator<ArticleViewModel>()
+                        ..selectArticle(state.pathParameters['id']!),
+              child: const ArticleDetailScreen(),
             ),
       ),
       GoRoute(
