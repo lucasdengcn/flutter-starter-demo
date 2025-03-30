@@ -40,34 +40,37 @@ class ArticleListScreen extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView.builder(
-              controller: viewModel.scrollController,
-              itemCount:
-                  viewModel.articles.length +
-                  (viewModel.state == ArticleViewState.loadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                // Show loading indicator at the bottom during pagination
-                if (index == viewModel.articles.length) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: CircularProgressIndicator(),
+            child: RefreshIndicator(
+              onRefresh: () => viewModel.refreshArticles(),
+              child: ListView.builder(
+                controller: viewModel.scrollController,
+                itemCount:
+                    viewModel.articles.length +
+                    (viewModel.state == ArticleViewState.loadingMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  // Show loading indicator at the bottom during pagination
+                  if (index == viewModel.articles.length) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
+                  final article = viewModel.articles[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: ArticleCard(
+                      article: article,
+                      onTap: () {
+                        viewModel.selectArticle(article.id);
+                        context.push('/article/detail/${article.id}');
+                      },
                     ),
                   );
-                }
-
-                final article = viewModel.articles[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: ArticleCard(
-                    article: article,
-                    onTap: () {
-                      viewModel.selectArticle(article.id);
-                      context.push('/article/detail/${article.id}');
-                    },
-                  ),
-                );
-              },
+                },
+              ),
             ),
           );
         },

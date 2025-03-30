@@ -4,7 +4,14 @@ import '../../../core/viewmodel/base_viewmodel.dart';
 import '../model/article_model.dart';
 import '../service/article_service.dart';
 
-enum ArticleViewState { initial, loading, loaded, error, loadingMore }
+enum ArticleViewState {
+  initial,
+  loading,
+  loaded,
+  error,
+  loadingMore,
+  refreshing,
+}
 
 class ArticleViewModel extends BaseViewModel {
   final ArticleService _articleService;
@@ -64,6 +71,22 @@ class ArticleViewModel extends BaseViewModel {
     } catch (e) {
       setError(e.toString());
       _setState(ArticleViewState.error);
+    }
+  }
+
+  // Refresh articles
+  Future<void> refreshArticles() async {
+    try {
+      _setState(ArticleViewState.refreshing);
+      _currentPage = 1;
+      final refreshedArticles = await _articleService.getArticles();
+      _articles = refreshedArticles;
+      _hasMoreArticles = refreshedArticles.length >= _articlesPerPage;
+      _setState(ArticleViewState.loaded);
+    } catch (e) {
+      setError(e.toString());
+      // Keep existing articles on refresh error
+      _setState(ArticleViewState.loaded);
     }
   }
 
