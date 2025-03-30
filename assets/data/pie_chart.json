@@ -1,0 +1,30 @@
+{
+  "title": "Policy Distribution by Type",
+  "series": [
+    {
+      "name": "Policy Types",
+      "data": [
+        {
+          "value": 35,
+          "name": "Family Protection"
+        },
+        {
+          "value": 25,
+          "name": "Health Coverage"
+        },
+        {
+          "value": 20,
+          "name": "Vehicle Insurance"
+        },
+        {
+          "value": 15,
+          "name": "Property Protection"
+        },
+        {
+          "value": 5,
+          "name": "Others"
+        }
+      ]
+    }
+  ]
+}

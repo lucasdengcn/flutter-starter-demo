@@ -1,0 +1,53 @@
+{
+  "title": "Monthly Policy Growth",
+  "xAxis": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  "series": [
+    {
+      "name": "Family Takaful",
+      "data": [
+        150,
+        132,
+        145,
+        190,
+        178,
+        140,
+        210,
+        130,
+        250,
+        270,
+        290,
+        310
+      ]
+    },
+    {
+      "name": "General Takaful",
+      "data": [
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160,
+        170,
+        180,
+        190,
+        200
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/error_view.dart';
 import '../../features/charts/viewmodel/chart_viewmodel.dart';
 import '../../features/charts/widgets/chart_widget.dart';
 
@@ -9,87 +10,90 @@ class ChartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ChartViewModel()..loadChartData(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Charts Demo')),
-        body: Consumer<ChartViewModel>(
-          builder: (context, viewModel, child) {
-            if (viewModel.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (viewModel.error != null) {
-              return Center(child: Text('Error: ${viewModel.error}'));
-            }
-
-            if (viewModel.chartData == null) {
-              return const Center(child: Text('No data available'));
-            }
-
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    viewModel.chartData!.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ChartWidget(
-                        chartData: viewModel.chartData!,
-                        viewModel: viewModel,
-                        type: 'line',
+    return Consumer<ChartViewModel>(
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Charts Demo'),
+            actions: [
+              PopupMenuButton<String>(
+                onSelected: (type) {
+                  viewModel.loadChartData(chartType: type);
+                },
+                itemBuilder:
+                    (context) => [
+                      const PopupMenuItem(
+                        value: 'line',
+                        child: Text('Line Chart'),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ChartWidget(
-                        chartData: viewModel.chartData!,
-                        viewModel: viewModel,
-                        type: 'bar',
+                      const PopupMenuItem(
+                        value: 'bar',
+                        child: Text('Bar Chart'),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ChartWidget(
-                        chartData: viewModel.chartData!,
-                        viewModel: viewModel,
-                        type: 'pie',
+                      const PopupMenuItem(
+                        value: 'pie',
+                        child: Text('Pie Chart'),
                       ),
-                    ),
-                  ),
-                ],
+                      const PopupMenuItem(
+                        value: 'scatter',
+                        child: Text('Scatter Chart'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'radar',
+                        child: Text('Radar Chart'),
+                      ),
+                    ],
+                icon: const Icon(Icons.add_chart),
               ),
-            );
-          },
-        ),
-      ),
+            ],
+          ),
+          body: RefreshIndicator(
+            onRefresh:
+                () => viewModel.loadChartData(
+                  chartType: viewModel.currentChartType,
+                ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child:
+                  viewModel.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : viewModel.errorMessage.isNotEmpty
+                      ? ErrorView(
+                        message: viewModel.errorMessage,
+                        onRetry:
+                            () => viewModel.loadChartData(
+                              chartType: viewModel.currentChartType,
+                            ),
+                      )
+                      : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            viewModel.title,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              child: ChartWidget(
+                                key: ValueKey(viewModel.currentChartType),
+                                chartData: viewModel.chartData,
+                                viewModel: viewModel,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,0 +1,47 @@
+{
+  "title": "Coverage Analysis",
+  "indicator": [
+    {
+      "name": "Health Protection",
+      "max": 100
+    },
+    {
+      "name": "Life Coverage",
+      "max": 100
+    },
+    {
+      "name": "Property Insurance",
+      "max": 100
+    },
+    {
+      "name": "Vehicle Protection",
+      "max": 100
+    },
+    {
+      "name": "Investment Returns",
+      "max": 100
+    }
+  ],
+  "series": [
+    {
+      "name": "Basic Plan",
+      "data": [
+        70,
+        60,
+        50,
+        80,
+        40
+      ]
+    },
+    {
+      "name": "Premium Plan",
+      "data": [
+        90,
+        85,
+        75,
+        95,
+        80
+      ]
+    }
+  ]
+}

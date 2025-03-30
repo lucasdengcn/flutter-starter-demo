@@ -1,0 +1,32 @@
+{
+  "title": "Claims by Category",
+  "xAxis": [
+    "Health",
+    "Vehicle",
+    "Property",
+    "Life",
+    "Travel"
+  ],
+  "series": [
+    {
+      "name": "Approved Claims",
+      "data": [
+        250,
+        180,
+        120,
+        90,
+        60
+      ]
+    },
+    {
+      "name": "Pending Claims",
+      "data": [
+        50,
+        40,
+        30,
+        20,
+        10
+      ]
+    }
+  ]
+}

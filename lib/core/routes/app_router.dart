@@ -23,7 +23,7 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/article/list',
+    initialLocation: '/chart',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
