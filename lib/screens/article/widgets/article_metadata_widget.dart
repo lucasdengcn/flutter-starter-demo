@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import '../../../features/article/model/article_model.dart';
 
 class ArticleMetadataWidget extends StatelessWidget {
-  final String author;
-  final DateTime publishDate;
-  final List<String> tags;
+  final Article article;
 
-  const ArticleMetadataWidget({
-    super.key,
-    required this.author,
-    required this.publishDate,
-    required this.tags,
-  });
+  const ArticleMetadataWidget({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -23,45 +17,52 @@ class ArticleMetadataWidget extends StatelessWidget {
         // Author and Date
         Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 14,
-                backgroundColor: theme.primaryColor.withOpacity(0.1),
-                child: Icon(Icons.person, size: 16, color: theme.primaryColor),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                author,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 12,
+                  backgroundColor: theme.primaryColor.withOpacity(0.1),
+                  child: Icon(
+                    Icons.person,
+                    size: 16,
+                    color: theme.primaryColor,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              CircleAvatar(
-                radius: 14,
-                backgroundColor: theme.primaryColor.withOpacity(0.1),
-                child: Icon(
-                  Icons.calendar_today,
-                  size: 14,
-                  color: theme.primaryColor,
+                const SizedBox(width: 6),
+                Text(
+                  article.author,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                DateFormat('MMM d, yyyy').format(publishDate),
-                style: theme.textTheme.bodyMedium,
-              ),
-            ],
+                const SizedBox(width: 12),
+                Icon(Icons.favorite, size: 16, color: theme.primaryColor),
+                const SizedBox(width: 6),
+                Text(
+                  '${article.likesCount}',
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 14),
+                ),
+                const SizedBox(width: 12),
+                Icon(Icons.thumb_up, size: 16, color: theme.primaryColor),
+                const SizedBox(width: 6),
+                Text(
+                  '${article.thumbsUpCount}',
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 14),
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 12),
         // Tags
         Wrap(
           spacing: 8,
           runSpacing: 8,
           children:
-              tags
+              article.tags
                   .map(
                     (tag) => Container(
                       decoration: BoxDecoration(

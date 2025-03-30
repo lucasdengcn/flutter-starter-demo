@@ -12,6 +12,8 @@ class Article {
   final DateTime publishDate;
   final String author;
   final List<String> tags;
+  final int likesCount;
+  final int thumbsUpCount;
 
   Article({
     required this.id,
@@ -22,6 +24,8 @@ class Article {
     required this.publishDate,
     required this.author,
     required this.tags,
+    this.likesCount = 0,
+    this.thumbsUpCount = 0,
   });
 
   factory Article.fromJson(Map<String, dynamic> json) =>

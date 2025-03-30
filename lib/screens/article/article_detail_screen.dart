@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/article/viewmodel/article_viewmodel.dart';
+import 'widgets/article_action_toolbar.dart';
 import 'widgets/article_header_widget.dart';
 import 'widgets/article_image_widget.dart';
 import 'widgets/article_metadata_widget.dart';
@@ -106,18 +107,17 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title
-                      ArticleHeaderWidget(title: article.title),
+                      // Title and Publish Date
+                      ArticleHeaderWidget(article: article),
                       const SizedBox(height: 16),
                       // Author, Date and Tags
-                      ArticleMetadataWidget(
-                        author: article.author,
-                        publishDate: article.publishDate,
-                        tags: article.tags,
-                      ),
+                      ArticleMetadataWidget(article: article),
                       const Divider(height: 32),
                       // Content
                       MarkdownRenderer(content: article.content),
+                      const SizedBox(height: 24),
+                      // Action Toolbar
+                      ArticleActionToolbar(article: article),
                     ],
                   ),
                 ),

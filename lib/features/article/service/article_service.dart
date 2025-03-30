@@ -13,6 +13,8 @@ class ArticleService {
         title: 'Understanding Takaful Insurance',
         summary:
             'Learn about the principles of Takaful and how it differs from conventional insurance.',
+        likesCount: 42,
+        thumbsUpCount: 128,
         content: '''
 Takaful is an Islamic insurance concept that is based on the principles of mutual cooperation (ta'awun) and donation (tabarru), where risk is shared collectively by a group of participants.
 
@@ -57,6 +59,8 @@ By understanding these principles, you can make informed decisions about your in
         title: 'The History of Islamic Insurance',
         summary:
             'Explore the rich history of Islamic insurance from its origins to modern implementations.',
+        likesCount: 42,
+        thumbsUpCount: 128,
         content: '''
 # The History of Islamic Insurance
 
@@ -109,6 +113,8 @@ The history of Islamic insurance demonstrates how traditional principles can be 
         title: '5 Tips for Choosing the Right Takaful Plan',
         summary:
             'Essential advice for selecting a Takaful plan that meets your needs and aligns with your values.',
+        likesCount: 42,
+        thumbsUpCount: 128,
         content: '''
 # 5 Tips for Choosing the Right Takaful Plan
 
