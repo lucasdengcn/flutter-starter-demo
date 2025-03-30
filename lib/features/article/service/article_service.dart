@@ -50,6 +50,9 @@ By understanding these principles, you can make informed decisions about your in
 ''',
         imageUrl:
             'https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg',
+        videoUrl:
+            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        // audioUrl: 'https://www.example.com/audio/takaful-principles.mp3',
         publishDate: DateTime(2023, 10, 15),
         author: 'Ahmed Hassan',
         tags: ['Insurance', 'Islamic Finance', 'Takaful'],
@@ -104,6 +107,10 @@ The history of Islamic insurance demonstrates how traditional principles can be 
 ''',
         imageUrl:
             'https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg',
+        //videoUrl:
+        //    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        audioUrl:
+            'https://sample-files.com/downloads/audio/mp3/sample-files.com_tone_test_audio.mp3',
         publishDate: DateTime(2023, 11, 20),
         author: 'Fatima Al-Zahra',
         tags: ['History', 'Islamic Finance', 'Takaful'],
@@ -165,6 +172,10 @@ By following these tips, you can select a Takaful plan that not only provides ad
 ''',
         imageUrl:
             'https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg',
+        videoUrl:
+            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        audioUrl:
+            'https://sample-files.com/downloads/audio/mp3/sample-files.com_tone_test_audio.mp3',
         publishDate: DateTime(2023, 12, 5),
         author: 'Yusuf Rahman',
         tags: ['Insurance', 'Tips', 'Financial Planning'],

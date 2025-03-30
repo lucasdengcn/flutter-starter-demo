@@ -9,6 +9,8 @@ class Article {
   final String summary;
   final String content;
   final String imageUrl;
+  final String? videoUrl;
+  final String? audioUrl;
   final DateTime publishDate;
   final String author;
   final List<String> tags;
@@ -21,6 +23,8 @@ class Article {
     required this.summary,
     required this.content,
     required this.imageUrl,
+    this.videoUrl,
+    this.audioUrl,
     required this.publishDate,
     required this.author,
     required this.tags,

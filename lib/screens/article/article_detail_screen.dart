@@ -5,6 +5,7 @@ import '../../features/article/viewmodel/article_viewmodel.dart';
 import 'widgets/article_action_toolbar.dart';
 import 'widgets/article_header_widget.dart';
 import 'widgets/article_image_widget.dart';
+import 'widgets/article_media_widget.dart';
 import 'widgets/article_metadata_widget.dart';
 import 'widgets/article_title_widget.dart';
 import 'widgets/markdown_renderer.dart';
@@ -95,31 +96,41 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               ),
               // Article Content
               SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title and Publish Date
+                          ArticleHeaderWidget(article: article),
+                          const SizedBox(height: 16),
+                          // Author, Date and Tags
+                          ArticleMetadataWidget(article: article),
+                          const Divider(height: 32),
+                          ArticleMediaWidget(
+                            videoUrl: article.videoUrl,
+                            audioUrl: article.audioUrl,
+                          ),
+                          const SizedBox(height: 24),
+                          // Content
+                          MarkdownRenderer(content: article.content),
+                          const SizedBox(height: 24),
+                          // Action Toolbar
+                          ArticleActionToolbar(article: article),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title and Publish Date
-                      ArticleHeaderWidget(article: article),
-                      const SizedBox(height: 16),
-                      // Author, Date and Tags
-                      ArticleMetadataWidget(article: article),
-                      const Divider(height: 32),
-                      // Content
-                      MarkdownRenderer(content: article.content),
-                      const SizedBox(height: 24),
-                      // Action Toolbar
-                      ArticleActionToolbar(article: article),
-                    ],
-                  ),
+                  ],
                 ),
               ),
             ],
