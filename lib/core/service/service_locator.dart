@@ -15,6 +15,7 @@ import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
 import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import '../../features/video_player/viewmodel/video_player_viewmodel.dart';
+import '../providers/theme_provider.dart';
 import 'api_client.dart';
 import 'cache_service.dart';
 import 'config_service.dart';
@@ -48,6 +49,9 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<PdfService>(() => PdfService());
     // Initialize ConfigService
     locator<ConfigService>();
+
+    // Register Providers
+    locator.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
 
     // Register ViewModels as Factories
     locator.registerFactory<PrayerViewModel>(

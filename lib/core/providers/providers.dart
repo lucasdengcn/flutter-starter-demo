@@ -1,3 +1,6 @@
+import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
+import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/features/video_player/viewmodel/video_player_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/article/viewmodel/article_viewmodel.dart';
@@ -17,6 +20,9 @@ class AppProviders {
       ChangeNotifierProvider(create: (_) => locator<ImagePickerViewModel>()),
       ChangeNotifierProvider(create: (_) => locator<ArticleViewModel>()),
       ChangeNotifierProvider(create: (_) => locator<PdfViewerViewModel>()),
+      ChangeNotifierProvider(create: (_) => locator<ChatViewModel>()),
+      ChangeNotifierProvider(create: (_) => locator<ChartViewModel>()),
+      ChangeNotifierProvider(create: (_) => locator<VideoPlayerViewModel>()),
     ];
   }
 }

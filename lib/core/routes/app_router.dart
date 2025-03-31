@@ -4,6 +4,7 @@ import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
 import 'package:insurance_ws/features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
 import 'package:insurance_ws/screens/charts/chart_screen.dart';
 import 'package:insurance_ws/screens/chat/chat_screen.dart';
+import 'package:insurance_ws/screens/index/index_screen.dart';
 import 'package:insurance_ws/screens/pdf_viewer/pdf_viewer_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +26,14 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/pdf_viewer',
+    initialLocation: '/',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
+      GoRoute(
+        path: '/',
+        name: 'index',
+        builder: (context, state) => const IndexScreen(),
+      ),
       GoRoute(
         path: '/signin',
         name: 'signin',

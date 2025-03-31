@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'core/providers/providers.dart';
+import 'core/providers/theme_provider.dart';
 import 'core/routes/app_router.dart';
 import 'core/service/service_locator.dart';
 
@@ -27,15 +28,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: AppProviders.getProviders(),
-      child: MaterialApp.router(
-        title: 'Ibadah',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
-        routerConfig: AppRouter.router,
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ...AppProviders.getProviders(), // Include existing providers
+      ],
+      child: Consumer<ThemeProvider>(
+        builder:
+            (context, themeProvider, child) => MaterialApp.router(
+              title: 'Ibadah',
+              debugShowCheckedModeBanner: false,
+              theme: themeProvider.currentTheme,
+              routerConfig: AppRouter.router,
+            ),
       ),
     );
   }
