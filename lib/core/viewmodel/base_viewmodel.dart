@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+import 'package:insurance_ws/core/service/logger_service.dart';
 
 class BaseViewModel extends ChangeNotifier {
   bool _isLoading = false;
@@ -6,6 +8,8 @@ class BaseViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+
+  LoggerService logger = GetIt.I<LoggerService>();
 
   void setLoading(bool loading) {
     _isLoading = loading;

@@ -1,8 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
 import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
 import 'package:insurance_ws/screens/charts/chart_screen.dart';
 import 'package:insurance_ws/screens/chat/chat_screen.dart';
+import 'package:insurance_ws/screens/pdf_viewer/pdf_viewer_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/article/viewmodel/article_viewmodel.dart';
@@ -23,7 +25,7 @@ import '../service/service_locator.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/chart',
+    initialLocation: '/pdf_viewer',
     navigatorKey: locator<NavigationService>().navigatorKey,
     routes: [
       GoRoute(
@@ -90,6 +92,15 @@ class AppRouter {
                       locator<ArticleViewModel>()
                         ..selectArticle(state.pathParameters['id']!),
               child: const ArticleDetailScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/pdf_viewer',
+        name: 'pdf_viewer',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<PdfViewerViewModel>(),
+              child: PdfViewerScreen(),
             ),
       ),
       GoRoute(

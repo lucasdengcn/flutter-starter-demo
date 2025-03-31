@@ -6,6 +6,8 @@ import '../../features/charts/service/chart_service.dart';
 import '../../features/charts/viewmodel/chart_viewmodel.dart';
 import '../../features/image_picker/service/image_service.dart';
 import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
+import '../../features/pdf_viewer/service/pdf_service.dart';
+import '../../features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
 import '../../features/prayer/service/prayer_service.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../features/signin/service/signin_auth_service.dart';
@@ -43,6 +45,7 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<PrayerService>(() => PrayerService());
     locator.registerLazySingleton<ArticleService>(() => ArticleService());
     locator.registerLazySingleton<ChartService>(() => ChartService());
+    locator.registerLazySingleton<PdfService>(() => PdfService());
     // Initialize ConfigService
     locator<ConfigService>();
 
@@ -72,6 +75,7 @@ Future<void> setupServiceLocator() async {
     locator.registerFactory<ChartViewModel>(
       () => ChartViewModel(chartService: locator<ChartService>()),
     );
+    locator.registerFactory<PdfViewerViewModel>(() => PdfViewerViewModel());
 
     // Initialize Services if needed
     await locator<PrayerService>().init();
