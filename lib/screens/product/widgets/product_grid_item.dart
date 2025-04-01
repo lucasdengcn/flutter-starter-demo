@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/widgets/network_image_with_error.dart';
 import '../../../features/product/model/product_model.dart';
+import '../../../features/product/viewmodel/product_viewmodel.dart';
 
 class ProductGridItem extends StatelessWidget {
   final Product product;
@@ -48,25 +50,30 @@ class ProductGridItem extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      '\$${product.price.toStringAsFixed(2)}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Consumer<ProductViewModel>(
+                      builder:
+                          (context, viewModel, _) => Text(
+                            viewModel.formatPrice(product.price),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      product.stockQuantity > 0
-                          ? 'In Stock: ${product.stockQuantity}'
-                          : 'Out of Stock',
-                      style: TextStyle(
-                        color:
-                            product.stockQuantity > 0
-                                ? Colors.green
-                                : Colors.red,
-                        fontSize: 12,
-                      ),
+                    Consumer<ProductViewModel>(
+                      builder:
+                          (context, viewModel, _) => Text(
+                            viewModel.getStockStatusText(product.stockQuantity),
+                            style: TextStyle(
+                              color: viewModel.getStockStatusColor(
+                                product.stockQuantity,
+                              ),
+                              fontSize: 12,
+                            ),
+                          ),
                     ),
                   ],
                 ),

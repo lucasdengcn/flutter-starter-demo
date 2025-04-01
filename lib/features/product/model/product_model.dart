@@ -27,4 +27,14 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+  factory Product.empty() => Product(
+    id: '',
+    name: '',
+    price: 0.0,
+    description: '',
+    imageUrl: '',
+    category: '',
+    stockQuantity: 0,
+    attributes: {},
+  );
 }
