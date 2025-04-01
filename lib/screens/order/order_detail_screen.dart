@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/order/model/order_model.dart';
 import '../../features/order/viewmodel/order_viewmodel.dart';
-import 'widgets/order_item_card.dart';
+import 'widgets/order_items_section.dart';
 import 'widgets/order_status_section.dart';
 import 'widgets/order_summary_section.dart';
 import 'widgets/shipping_address_section.dart';
@@ -62,43 +61,27 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             return const Center(child: Text('Order not found'));
           }
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                OrderStatusSection(order: order),
-                _buildOrderItems(context, order),
-                ShippingAddressSection(order: order),
-                OrderSummarySection(order: order),
-              ],
-            ),
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    OrderStatusSection(order: order),
+                    const SizedBox(height: 8),
+                    OrderItemsSection(order: order),
+                    const SizedBox(height: 8),
+                    ShippingAddressSection(order: order),
+                    const SizedBox(height: 8),
+                    OrderSummarySection(order: order),
+                  ],
+                ),
+              ),
+            ],
           );
         },
       ),
-    );
-  }
-
-  Widget _buildOrderItems(BuildContext context, Order order) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            'Order Items',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: order.items.length,
-          itemBuilder: (context, index) {
-            final item = order.items[index];
-            return OrderItemCard(orderItem: item);
-          },
-        ),
-      ],
     );
   }
 }
