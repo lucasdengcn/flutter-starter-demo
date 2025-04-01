@@ -10,14 +10,46 @@ class OrderViewModel extends BaseViewModel {
   final OrderService _orderService = GetIt.I<OrderService>();
   List<Order> _orders = [];
   Order? _selectedOrder;
+  bool _isLastPage = false;
+  int _currentPage = 1;
+  static const int _pageSize = 10;
 
   List<Order> get orders => _orders;
   Order? get selectedOrder => _selectedOrder;
+  bool get isLastPage => _isLastPage;
+
+  Future<void> refreshOrders() async {
+    _currentPage = 1;
+    _isLastPage = false;
+    _orders.clear();
+    await loadOrders();
+  }
 
   Future<void> loadOrders() async {
+    if (_isLastPage) return;
+
     await handleAsyncOperation(() async {
-      _orders = await _orderService.getOrdersByUserId();
+      final newOrders = await _orderService.getOrdersByUserId(
+        page: _currentPage,
+        pageSize: _pageSize,
+      );
+
+      if (newOrders.isEmpty || newOrders.length < _pageSize) {
+        _isLastPage = true;
+      }
+
+      if (_currentPage == 1) {
+        _orders = newOrders;
+      } else {
+        _orders.addAll(newOrders);
+      }
+
+      _currentPage++;
     });
+  }
+
+  Future<void> loadMoreOrders() async {
+    await loadOrders();
   }
 
   Future<void> loadOrderDetails(String orderId) async {

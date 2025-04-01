@@ -18,6 +18,10 @@ class OrderService {
   final List<Order> _userOrders = [];
 
   Future<List<Order>> getOrders() async {
+    if (_userOrders.isNotEmpty) {
+      return _userOrders;
+    }
+
     try {
       final String jsonString = await rootBundle.loadString(ordersAssetPath);
       final Map<String, dynamic> jsonData = json.decode(jsonString);
@@ -29,16 +33,29 @@ class OrderService {
     }
   }
 
-  Future<List<Order>> getOrdersByUserId() async {
+  Future<List<Order>> getOrdersByUserId({
+    int page = 1,
+    int pageSize = 10,
+  }) async {
     try {
-      if (_userOrders.isNotEmpty) {
-        return _userOrders;
+      if (_userOrders.isEmpty) {
+        final orders = await getOrders();
+        final userOrders =
+            orders.where((order) => order.userId == currentUserId).toList();
+        _userOrders.addAll(userOrders);
       }
-      final orders = await getOrders();
-      final teamp =
-          orders.where((order) => order.userId == currentUserId).toList();
-      _userOrders.addAll(teamp);
-      return teamp;
+
+      final startIndex = (page - 1) * pageSize;
+      final endIndex = startIndex + pageSize;
+
+      if (startIndex >= _userOrders.length) {
+        return [];
+      }
+
+      return _userOrders.sublist(
+        startIndex,
+        endIndex > _userOrders.length ? _userOrders.length : endIndex,
+      );
     } catch (e) {
       _logger.e('Error getOrdersByUserId', [e, StackTrace.current]);
       throw Exception('Error finding orders: $e');
@@ -50,7 +67,7 @@ class OrderService {
       final orders = await getOrders();
       final order = orders.firstWhere(
         (order) => order.id == orderId,
-        orElse: () => throw Exception('Order not found'),
+        orElse: () => throw Exception('Order not found: $orderId'),
       );
       return order;
     } catch (e) {

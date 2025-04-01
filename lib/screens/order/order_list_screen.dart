@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/widgets/error_view.dart';
@@ -13,10 +14,30 @@ class OrderListScreen extends StatefulWidget {
 }
 
 class _OrderListScreenState extends State<OrderListScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<OrderViewModel>().loadOrders());
+    final viewModel = context.read<OrderViewModel>();
+    Future.microtask(() => viewModel.loadOrders());
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      final viewModel = context.read<OrderViewModel>();
+      if (!viewModel.isLoading && !viewModel.isLastPage) {
+        viewModel.loadMoreOrders();
+      }
+    }
   }
 
   @override
@@ -51,7 +72,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     child: const Text('Start Shopping'),
                   ),
@@ -61,18 +82,31 @@ class _OrderListScreenState extends State<OrderListScreen> {
           }
 
           return RefreshIndicator(
-            onRefresh: () => viewModel.loadOrders(),
+            onRefresh: () async {
+              await viewModel.refreshOrders();
+              return;
+            },
             child: ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.all(16),
-              itemCount: viewModel.orders.length,
+              itemCount:
+                  viewModel.orders.length + (viewModel.isLastPage ? 0 : 1),
               itemBuilder: (context, index) {
+                if (index >= viewModel.orders.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
                 final order = viewModel.orders[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: OrderListItem(
                     order: order,
                     onTap: () {
-                      // TODO: Navigate to order detail screen
+                      context.push('/orders/${order.id}');
                     },
                   ),
                 );
