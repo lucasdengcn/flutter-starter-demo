@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": "p1",
+      "name": "Family Takaful Plan",
+      "price": 299.99,
+      "description": "Comprehensive family protection plan with savings and investment benefits",
+      "imageUrl": "https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg",
+      "category": "Insurance",
+      "stockQuantity": 999,
+      "attributes": {
+        "coverage": "Up to $500,000",
+        "term": "20 years",
+        "paymentFrequency": "Monthly"
+      }
+    },
+    {
+      "id": "p2",
+      "name": "Education Savings Plan",
+      "price": 199.99,
+      "description": "Secure your children's future education with our Shariah-compliant savings plan",
+      "imageUrl": "https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg",
+      "category": "Savings",
+      "stockQuantity": 999,
+      "attributes": {
+        "maturityPeriod": "15 years",
+        "minimumContribution": "$100/month",
+        "educationBonus": "5% on maturity"
+      }
+    },
+    {
+      "id": "p3",
+      "name": "Health Protection Plus",
+      "price": 149.99,
+      "description": "Comprehensive health coverage with additional critical illness benefits",
+      "imageUrl": "https://karryon.com.au/wp-content/uploads/2014/12/shutterstock_120633745.jpg",
+      "category": "Health",
+      "stockQuantity": 999,
+      "attributes": {
+        "hospitalCoverage": "$200/day",
+        "criticalIllnessCover": "$50,000",
+        "annualLimit": "$100,000"
+      }
+    }
+  ]
+}

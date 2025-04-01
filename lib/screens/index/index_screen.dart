@@ -16,6 +16,9 @@ class IndexScreen extends StatelessWidget {
       {'name': 'PDF Viewer', 'route': '/pdf_viewer'},
       {'name': 'Charts', 'route': '/charts'},
       {'name': 'Chat', 'route': '/chat'},
+      {'name': 'Products', 'route': '/products'},
+      {'name': 'Shopping Cart', 'route': '/cart'},
+      {'name': 'Orders', 'route': '/orders'},
     ];
 
     return Scaffold(
@@ -80,6 +83,12 @@ class IndexScreen extends StatelessWidget {
         return Icons.bar_chart;
       case 'Chat':
         return Icons.chat;
+      case 'Products':
+        return Icons.shopping_bag;
+      case 'Shopping Cart':
+        return Icons.shopping_cart;
+      case 'Orders':
+        return Icons.receipt_long;
       default:
         return Icons.arrow_forward;
     }

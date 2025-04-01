@@ -2,14 +2,20 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/article/service/article_service.dart';
 import '../../features/article/viewmodel/article_viewmodel.dart';
+import '../../features/cart/service/cart_service.dart';
+import '../../features/cart/viewmodel/cart_viewmodel.dart';
 import '../../features/charts/service/chart_service.dart';
 import '../../features/charts/viewmodel/chart_viewmodel.dart';
 import '../../features/image_picker/service/image_service.dart';
 import '../../features/image_picker/viewmodel/image_picker_viewmodel.dart';
+import '../../features/order/service/order_service.dart';
+import '../../features/order/viewmodel/order_viewmodel.dart';
 import '../../features/pdf_viewer/service/pdf_service.dart';
 import '../../features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
 import '../../features/prayer/service/prayer_service.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
+import '../../features/product/service/product_service.dart';
+import '../../features/product/viewmodel/product_viewmodel.dart';
 import '../../features/signin/service/signin_auth_service.dart';
 import '../../features/signin/viewmodel/signin_viewmodel.dart';
 import '../../features/signup/service/signup_auth_service.dart';
@@ -80,6 +86,20 @@ Future<void> setupServiceLocator() async {
       () => ChartViewModel(chartService: locator<ChartService>()),
     );
     locator.registerFactory<PdfViewerViewModel>(() => PdfViewerViewModel());
+
+    // Register Product related dependencies
+    locator.registerLazySingleton<ProductService>(() => ProductService());
+    locator.registerFactory<ProductViewModel>(() => ProductViewModel());
+
+    // Register Cart related dependencies
+    locator.registerLazySingleton<CartService>(
+      () => CartService(locator<ProductService>()),
+    );
+    locator.registerFactory<CartViewModel>(() => CartViewModel());
+
+    // Register Order related dependencies
+    locator.registerLazySingleton<OrderService>(() => OrderService());
+    locator.registerFactory<OrderViewModel>(() => OrderViewModel());
 
     // Initialize Services if needed
     await locator<PrayerService>().init();

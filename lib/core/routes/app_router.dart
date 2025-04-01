@@ -1,11 +1,19 @@
 import 'package:go_router/go_router.dart';
+import 'package:insurance_ws/features/cart/viewmodel/cart_viewmodel.dart';
 import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
 import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/features/order/viewmodel/order_viewmodel.dart';
 import 'package:insurance_ws/features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
+import 'package:insurance_ws/features/product/viewmodel/product_viewmodel.dart';
+import 'package:insurance_ws/screens/cart/cart_screen.dart';
 import 'package:insurance_ws/screens/charts/chart_screen.dart';
 import 'package:insurance_ws/screens/chat/chat_screen.dart';
 import 'package:insurance_ws/screens/index/index_screen.dart';
+import 'package:insurance_ws/screens/order/order_detail_screen.dart';
+import 'package:insurance_ws/screens/order/order_list_screen.dart';
 import 'package:insurance_ws/screens/pdf_viewer/pdf_viewer_screen.dart';
+import 'package:insurance_ws/screens/product/product_detail_screen.dart';
+import 'package:insurance_ws/screens/product/product_list_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/article/viewmodel/article_viewmodel.dart';
@@ -98,6 +106,59 @@ class AppRouter {
                       locator<ArticleViewModel>()
                         ..selectArticle(state.pathParameters['id']!),
               child: const ArticleDetailScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/products',
+        name: 'products',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<ProductViewModel>(),
+              child: const ProductListScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/products/:id',
+        name: 'product-detail',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create:
+                  (_) =>
+                      locator<ProductViewModel>()
+                        ..loadProductDetails(state.pathParameters['id']!),
+              child: ProductDetailScreen(
+                productId: state.pathParameters['id']!,
+              ),
+            ),
+      ),
+      GoRoute(
+        path: '/cart',
+        name: 'cart',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<CartViewModel>(),
+              child: const CartScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/orders',
+        name: 'orders',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<OrderViewModel>(),
+              child: OrderListScreen(userId: 'a'),
+            ),
+      ),
+      GoRoute(
+        path: '/orders/:id',
+        name: 'order-detail',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create:
+                  (_) =>
+                      locator<OrderViewModel>()
+                        ..loadOrderDetails(state.pathParameters['id']!),
+              child: OrderDetailScreen(orderId: state.pathParameters['id']!),
             ),
       ),
       GoRoute(
