@@ -60,7 +60,7 @@ class CartItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    cartItem.product.price.toStringAsFixed(2),
+                    '\$${cartItem.product.price.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).primaryColor,
                     ),

@@ -20,11 +20,6 @@ class CartService {
 
   bool get hasItems => _currentCart?.items.isNotEmpty ?? false;
 
-  String get formattedTotalAmount =>
-      (_currentCart?.totalAmount ?? 0.0).toStringAsFixed(2);
-
-  String get itemCountText => '${_currentCart?.itemCount ?? 0} items';
-
   // Add this method to load initial cart
   Future<Cart> loadCurrentCart(String userId) async {
     if (_currentCart != null) return Future.value(_currentCart!);

@@ -10,9 +10,13 @@ class CartViewModel extends BaseViewModel {
   final CartService _cartService = GetIt.I<CartService>();
 
   Cart get cart => _cartService.currentCart ?? Cart();
-  String get formattedTotalAmount => _cartService.formattedTotalAmount;
-  String get itemCountText => _cartService.itemCountText;
-  bool get hasItems => _cartService.hasItems;
+  //
+  int get itemCount => cart.itemCount;
+  String get formattedTotalAmount => '\$${cart.totalAmount.toStringAsFixed(2)}';
+  //
+  String get itemCountText => '${cart.itemCount} items';
+
+  bool get hasItems => cart.items.isNotEmpty;
 
   Future<void> loadUserCart() async {
     await handleAsyncOperation(() async {
