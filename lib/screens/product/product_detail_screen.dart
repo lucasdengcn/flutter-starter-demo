@@ -79,7 +79,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '\$${product.price.toStringAsFixed(2)}',
+                        viewModel.formattedPrice,
                         style: Theme.of(
                           context,
                         ).textTheme.headlineSmall?.copyWith(
@@ -154,19 +154,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed:
-                    product.stockQuantity > 0
-                        ? () {
-                          // TODO: Add to cart functionality
-                        }
-                        : null,
+                    viewModel.isInStock ? () => viewModel.addToCart() : null,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(
-                  product.stockQuantity > 0
-                      ? 'Add to Cart - \$${(product.price * quantity).toStringAsFixed(2)}'
-                      : 'Out of Stock',
-                ),
+                child: Text(viewModel.stockStatus),
               ),
             ),
           );

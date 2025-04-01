@@ -15,6 +15,19 @@ class ProductViewModel extends BaseViewModel {
 
   double get totalPrice => (_selectedProduct?.price ?? 0) * _quantity;
 
+  String get formattedPrice =>
+      _selectedProduct != null
+          ? '\$${_selectedProduct!.price.toStringAsFixed(2)}'
+          : '\$0.00';
+
+  String get formattedTotalPrice => '\$${totalPrice.toStringAsFixed(2)}';
+
+  bool get isInStock =>
+      _selectedProduct != null && _selectedProduct!.stockQuantity > 0;
+
+  String get stockStatus =>
+      isInStock ? 'Add to Cart - $formattedTotalPrice' : 'Out of Stock';
+
   void incrementQuantity() {
     if (_selectedProduct != null &&
         _quantity < _selectedProduct!.stockQuantity) {
