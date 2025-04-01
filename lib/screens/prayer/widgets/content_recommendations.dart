@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/widgets/error_view.dart';
+import '../../../features/prayer/model/content_recommendation.dart';
+import '../../../features/prayer/viewmodel/prayer_viewmodel.dart';
 
 class ContentRecommendations extends StatelessWidget {
   const ContentRecommendations({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<PrayerViewModel>();
+    final recommendations = viewModel.contentRecommendations;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,26 +43,30 @@ class ContentRecommendations extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        _buildContentCard(
-          title: '100 Greatest Muslim Generals in History from the ancient',
-          imageUrl: 'assets/images/muslim_generals.jpg',
-        ),
-        const SizedBox(height: 16),
-        _buildContentCard(
-          title: 'Tips Menjual Takaful Buat Beginner',
-          subtitle:
-              'Working from home might mean we\'re spending more time sitting than we\'d like to...',
-          imageUrl: 'assets/images/takaful_tips.jpg',
-        ),
+        if (viewModel.state == PrayerViewState.loading)
+          const Center(child: CircularProgressIndicator())
+        else if (viewModel.state == PrayerViewState.error)
+          const ErrorView(
+            message: 'Failed to load recommendations',
+            onRetry: null,
+          )
+        else
+          ...recommendations.map(
+            (content) => Column(
+              children: [
+                InkWell(
+                  onTap: () => viewModel.markContentAsViewed(content.title),
+                  child: _buildContentCard(content),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
       ],
     );
   }
 
-  Widget _buildContentCard({
-    required String title,
-    required String imageUrl,
-    String? subtitle,
-  }) {
+  Widget _buildContentCard(ContentRecommendation content) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -74,10 +86,16 @@ class ContentRecommendations extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: Image.asset(
-              imageUrl,
+              content.imageUrl,
               width: double.infinity,
               height: 160,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const ErrorView(
+                  message: 'Failed to load image',
+                  onRetry: null,
+                );
+              },
             ),
           ),
           Padding(
@@ -86,16 +104,16 @@ class ContentRecommendations extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  content.title,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                if (subtitle != null) ...[
+                if (content.subtitle != null) ...[
                   const SizedBox(height: 8),
                   Text(
-                    subtitle,
+                    content.subtitle!,
                     style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                 ],

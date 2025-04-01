@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/network_image_with_error.dart';
 import '../../../features/cart/model/cart_model.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -25,24 +26,12 @@ class CartItemCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                cartItem.product.imageUrl,
+              child: NetworkImageWithError(
+                imageUrl: cartItem.product.imageUrl,
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 40,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  );
-                },
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
             const SizedBox(width: 16),

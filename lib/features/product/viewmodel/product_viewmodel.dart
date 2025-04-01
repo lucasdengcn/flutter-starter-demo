@@ -1,63 +1,65 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
+import '../../../core/viewmodel/base_viewmodel.dart';
 import '../model/product_model.dart';
 import '../service/product_service.dart';
 
-class ProductViewModel extends ChangeNotifier {
+class ProductViewModel extends BaseViewModel {
   final ProductService _productService = ProductService();
   List<Product> _products = [];
   Product? _selectedProduct;
-  bool _isLoading = false;
-  String? _error;
-
   List<Product> get products => _products;
   Product? get selectedProduct => _selectedProduct;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
+  int _quantity = 1;
+  int get quantity => _quantity;
 
-  Future<void> loadProducts() async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+  double get totalPrice => (_selectedProduct?.price ?? 0) * _quantity;
 
-    try {
-      _products = await _productService.getProducts();
-    } catch (e) {
-      _error = e.toString();
-    } finally {
-      _isLoading = false;
+  void incrementQuantity() {
+    if (_selectedProduct != null &&
+        _quantity < _selectedProduct!.stockQuantity) {
+      _quantity++;
       notifyListeners();
     }
+  }
+
+  void decrementQuantity() {
+    if (_quantity > 1) {
+      _quantity--;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addToCart() async {
+    if (_selectedProduct == null) return;
+
+    await handleAsyncOperation(() async {
+      // TODO: Implement cart service integration
+      // await _cartService.addToCart(_selectedProduct!.id, _quantity);
+      _quantity = 1; // Reset quantity after adding to cart
+    });
+  }
+
+  void navigateToCart(BuildContext context) {
+    Navigator.pushNamed(context, '/cart');
+  }
+
+  Future<void> loadProducts() async {
+    await handleAsyncOperation(() async {
+      _products = await _productService.getProducts();
+    });
   }
 
   Future<void> loadProductDetails(String productId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
+    await handleAsyncOperation(() async {
       _selectedProduct = await _productService.getProductById(productId);
-    } catch (e) {
-      _error = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    });
   }
 
   Future<void> loadProductsByCategory(String category) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
+    await handleAsyncOperation(() async {
       _products = await _productService.getProductsByCategory(category);
-    } catch (e) {
-      _error = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    });
   }
 
   void clearSelectedProduct() {

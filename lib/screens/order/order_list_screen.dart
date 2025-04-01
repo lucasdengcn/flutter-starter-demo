@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/error_view.dart';
 import '../../features/order/viewmodel/order_viewmodel.dart';
 import 'widgets/order_list_item.dart';
 
 class OrderListScreen extends StatefulWidget {
-  final String userId;
-
-  const OrderListScreen({super.key, required this.userId});
+  const OrderListScreen({super.key});
 
   @override
   State<OrderListScreen> createState() => _OrderListScreenState();
@@ -17,9 +16,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => context.read<OrderViewModel>().loadOrders(widget.userId),
-    );
+    Future.microtask(() => context.read<OrderViewModel>().loadOrders());
   }
 
   @override
@@ -32,25 +29,10 @@ class _OrderListScreenState extends State<OrderListScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.error != null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Error: ${viewModel.error}',
-                    style: const TextStyle(color: Colors.red),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      viewModel.loadOrders(widget.userId);
-                    },
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
+          if (viewModel.errorMessage != null) {
+            return ErrorView(
+              message: viewModel.errorMessage!,
+              onRetry: () => viewModel.loadOrders(),
             );
           }
 
@@ -79,7 +61,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
           }
 
           return RefreshIndicator(
-            onRefresh: () => viewModel.loadOrders(widget.userId),
+            onRefresh: () => viewModel.loadOrders(),
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: viewModel.orders.length,

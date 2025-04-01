@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/error_view.dart';
 import '../../features/product/viewmodel/product_viewmodel.dart';
 import 'widgets/product_grid_item.dart';
 
@@ -37,12 +38,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.error != null) {
-            return Center(
-              child: Text(
-                'Error: ${viewModel.error}',
-                style: const TextStyle(color: Colors.red),
-              ),
+          if (viewModel.errorMessage != null) {
+            return ErrorView(
+              message: viewModel.errorMessage!,
+              onRetry: () => viewModel.loadProducts(),
             );
           }
 

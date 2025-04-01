@@ -12,6 +12,7 @@ import '../../features/order/service/order_service.dart';
 import '../../features/order/viewmodel/order_viewmodel.dart';
 import '../../features/pdf_viewer/service/pdf_service.dart';
 import '../../features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
+import '../../features/prayer/service/content_recommendation_service.dart';
 import '../../features/prayer/service/prayer_service.dart';
 import '../../features/prayer/viewmodel/prayer_viewmodel.dart';
 import '../../features/product/service/product_service.dart';
@@ -49,7 +50,6 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<EncryptionService>(() => EncryptionService());
     locator.registerLazySingleton<SignupAuthService>(() => SignupAuthService());
     locator.registerLazySingleton<SigninAuthService>(() => SigninAuthService());
-    locator.registerLazySingleton<PrayerService>(() => PrayerService());
     locator.registerLazySingleton<ArticleService>(() => ArticleService());
     locator.registerLazySingleton<ChartService>(() => ChartService());
     locator.registerLazySingleton<PdfService>(() => PdfService());
@@ -60,8 +60,15 @@ Future<void> setupServiceLocator() async {
     locator.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
 
     // Register ViewModels as Factories
+    locator.registerLazySingleton<PrayerService>(() => PrayerService());
+    locator.registerLazySingleton<ContentRecommendationService>(
+      () => ContentRecommendationService(),
+    );
     locator.registerFactory<PrayerViewModel>(
-      () => PrayerViewModel(prayerService: locator<PrayerService>()),
+      () => PrayerViewModel(
+        prayerService: locator<PrayerService>(),
+        contentService: locator<ContentRecommendationService>(),
+      ),
     );
     locator.registerFactory<SignupViewModel>(
       () => SignupViewModel(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ErrorView extends StatelessWidget {
   final String message;
-  final VoidCallback onRetry;
+  final VoidCallback? onRetry;
 
-  const ErrorView({super.key, required this.message, required this.onRetry});
+  const ErrorView({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +25,19 @@ class ErrorView extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: onRetry,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
-          ),
+          onRetry == null ? Container() : _buildRetryButton(context),
         ],
+      ),
+    );
+  }
+
+  _buildRetryButton(BuildContext context) {
+    return (
+      const SizedBox(height: 16),
+      ElevatedButton.icon(
+        onPressed: onRetry,
+        icon: const Icon(Icons.refresh),
+        label: const Text('Retry'),
       ),
     );
   }

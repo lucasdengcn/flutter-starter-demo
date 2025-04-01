@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/error_view.dart';
 import '../../features/article/viewmodel/article_viewmodel.dart';
 import 'widgets/article_card.dart';
 
@@ -17,22 +18,9 @@ class ArticleListScreen extends StatelessWidget {
           if (viewModel.state == ArticleViewState.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (viewModel.state == ArticleViewState.error) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Error: ${viewModel.errorMessage}',
-                    style: const TextStyle(color: Colors.red),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => viewModel.loadArticles(),
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
+            return ErrorView(
+              message: viewModel.errorMessage!,
+              onRetry: () => viewModel.loadArticles(),
             );
           } else if (viewModel.articles.isEmpty) {
             return const Center(child: Text('No articles available'));

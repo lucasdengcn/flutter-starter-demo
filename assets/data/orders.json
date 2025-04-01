@@ -16,7 +16,7 @@
         }
       ],
       "totalAmount": 499.98,
-      "status": "COMPLETED",
+      "status": "completed",
       "shippingAddress": {
         "street": "123 Main Street",
         "city": "Kuala Lumpur",
@@ -38,7 +38,7 @@
         }
       ],
       "totalAmount": 299.98,
-      "status": "PROCESSING",
+      "status": "processing",
       "shippingAddress": {
         "street": "456 Park Avenue",
         "city": "Penang",

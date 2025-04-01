@@ -10,7 +10,7 @@ OrderAddress _$OrderAddressFromJson(Map<String, dynamic> json) => OrderAddress(
   street: json['street'] as String,
   city: json['city'] as String,
   state: json['state'] as String,
-  zipCode: json['zipCode'] as String,
+  postalCode: json['postalCode'] as String,
   country: json['country'] as String,
 );
 
@@ -19,16 +19,16 @@ Map<String, dynamic> _$OrderAddressToJson(OrderAddress instance) =>
       'street': instance.street,
       'city': instance.city,
       'state': instance.state,
-      'zipCode': instance.zipCode,
+      'postalCode': instance.postalCode,
       'country': instance.country,
     };
 
 OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => OrderItem(
   productId: json['productId'] as String,
-  productName: json['productName'] as String,
+  productName: json['productName'] as String?,
   price: (json['price'] as num).toDouble(),
   quantity: (json['quantity'] as num).toInt(),
-  imageUrl: json['imageUrl'] as String,
+  imageUrl: json['imageUrl'] as String?,
 );
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
@@ -75,4 +75,5 @@ const _$OrderStatusEnumMap = {
   OrderStatus.shipped: 'shipped',
   OrderStatus.delivered: 'delivered',
   OrderStatus.cancelled: 'cancelled',
+  OrderStatus.completed: 'completed',
 };

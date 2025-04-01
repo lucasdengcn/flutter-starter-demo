@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/network_image_with_error.dart';
 import '../../../features/product/model/product_model.dart';
 
 class ProductGridItem extends StatelessWidget {
@@ -24,19 +25,10 @@ class ProductGridItem extends StatelessWidget {
           children: [
             Expanded(
               flex: 3,
-              child: Image.network(
-                product.imageUrl,
+              child: NetworkImageWithError(
+                imageUrl: product.imageUrl,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Icon(
-                      Icons.image_not_supported,
-                      size: 50,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
               ),
             ),
             Expanded(

@@ -44,10 +44,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.error != null) {
+          if (viewModel.errorMessage != null) {
             return Center(
               child: Text(
-                'Error: ${viewModel.error}',
+                'Error: ${viewModel.errorMessage}',
                 style: const TextStyle(color: Colors.red),
               ),
             );
@@ -124,23 +124,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              if (quantity > 1) {
-                                setState(() => quantity--);
-                              }
-                            },
+                            onPressed: () => viewModel.decrementQuantity(),
                           ),
                           Text(
-                            quantity.toString(),
+                            viewModel.quantity.toString(),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           IconButton(
                             icon: const Icon(Icons.add),
-                            onPressed: () {
-                              if (quantity < product.stockQuantity) {
-                                setState(() => quantity++);
-                              }
-                            },
+                            onPressed: () => viewModel.incrementQuantity(),
                           ),
                         ],
                       ),

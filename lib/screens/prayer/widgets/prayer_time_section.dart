@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../features/prayer/viewmodel/prayer_viewmodel.dart';
 
 class PrayerTimeSection extends StatelessWidget {
   const PrayerTimeSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<PrayerViewModel>();
+    final prayerTimes = viewModel.prayerTimes;
+    final nextPrayer = viewModel.nextPrayer;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -34,9 +41,9 @@ class PrayerTimeSection extends StatelessWidget {
                   color: Colors.green.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
-                  'Asr',
-                  style: TextStyle(
+                child: Text(
+                  nextPrayer!.name,
+                  style: const TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.w500,
                   ),
@@ -47,13 +54,10 @@ class PrayerTimeSection extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildPrayerTime('Fajr', '5:41 AM'),
-              _buildPrayerTime('Dhuhr', '1:15 PM'),
-              _buildPrayerTime('Asr', '4:30 PM'),
-              _buildPrayerTime('Maghrib', '7:15 PM'),
-              _buildPrayerTime('Isha', '8:30 PM'),
-            ],
+            children:
+                prayerTimes
+                    .map((prayer) => _buildPrayerTime(prayer.name, prayer.time))
+                    .toList(),
           ),
         ],
       ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/widgets/network_image_with_error.dart';
 import '../../../features/order/model/order_model.dart';
+import '../../../features/order/viewmodel/order_viewmodel.dart';
 
 class OrderItemCard extends StatelessWidget {
   final OrderItem orderItem;
@@ -9,6 +12,7 @@ class OrderItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderViewModel = context.read<OrderViewModel>();
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
@@ -18,22 +22,12 @@ class OrderItemCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                orderItem.imageUrl!,
+              child: NetworkImageWithError(
+                imageUrl: orderItem.imageUrl,
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 80,
-                    height: 80,
-                    color: Colors.grey[200],
-                    child: const Icon(
-                      Icons.image_not_supported,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
             const SizedBox(width: 16),
@@ -49,19 +43,19 @@ class OrderItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '\$${orderItem.price.toStringAsFixed(2)}',
+                    orderViewModel.formatPrice(orderItem.price),
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Quantity: ${orderItem.quantity}',
+                    orderViewModel.formatQuantity(orderItem.quantity),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Total: \$${orderItem.total.toStringAsFixed(2)}',
+                    orderViewModel.formatTotal(orderItem.total),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

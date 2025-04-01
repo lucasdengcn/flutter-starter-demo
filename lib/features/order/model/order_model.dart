@@ -19,15 +19,14 @@ class OrderAddress {
   final String street;
   final String city;
   final String state;
-  @JsonKey(name: 'postalCode')
-  final String zipCode;
+  final String postalCode;
   final String country;
 
   OrderAddress({
     required this.street,
     required this.city,
     required this.state,
-    required this.zipCode,
+    required this.postalCode,
     required this.country,
   });
 

@@ -33,13 +33,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (viewModel.error != null) {
+          if (viewModel.errorMessage != null) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Error: ${viewModel.error}',
+                    'Error: ${viewModel.errorMessage}',
                     style: const TextStyle(color: Colors.red),
                     textAlign: TextAlign.center,
                   ),
@@ -159,7 +159,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   Text(order.shippingAddress.street),
                   const SizedBox(height: 4),
                   Text(
-                    '${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}',
+                    '${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.postalCode}',
                   ),
                   const SizedBox(height: 4),
                   Text(order.shippingAddress.country),

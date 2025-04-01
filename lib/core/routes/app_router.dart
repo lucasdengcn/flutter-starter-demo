@@ -146,7 +146,7 @@ class AppRouter {
         builder:
             (context, state) => ChangeNotifierProvider(
               create: (_) => locator<OrderViewModel>(),
-              child: OrderListScreen(userId: 'a'),
+              child: const OrderListScreen(),
             ),
       ),
       GoRoute(
