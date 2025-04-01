@@ -8,6 +8,7 @@ class BaseViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  bool get hasError => _errorMessage != null;
 
   LoggerService logger = GetIt.I<LoggerService>();
 

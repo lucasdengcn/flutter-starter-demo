@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/service/snackbar_service.dart';
 import '../../features/product/viewmodel/product_viewmodel.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -18,9 +20,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
     super.initState();
+    final productViewModel = context.read<ProductViewModel>();
     Future.microtask(
-      () =>
-          context.read<ProductViewModel>().loadProductDetails(widget.productId),
+      () => productViewModel.loadProductDetails(widget.productId),
     );
   }
 
@@ -32,9 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              // TODO: Navigate to cart screen
-            },
+            onPressed: () => context.pushNamed('cart'),
           ),
         ],
       ),
@@ -153,8 +153,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                onPressed:
-                    viewModel.isInStock ? () => viewModel.addToCart() : null,
+                onPressed: _handleAddToCart,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
@@ -165,5 +164,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         },
       ),
     );
+  }
+
+  Future<void> _handleAddToCart() async {
+    final viewModel = context.read<ProductViewModel>();
+    if (!viewModel.isInStock) return;
+    await viewModel.addToCart();
+    if (!mounted) return;
+    if (viewModel.hasError) {
+      SnackBarService.showError(context, viewModel.errorMessage!);
+    } else if (viewModel.successMessage != null) {
+      SnackBarService.showSuccess(context, viewModel.successMessage!);
+    }
+    viewModel.clearMessages();
   }
 }

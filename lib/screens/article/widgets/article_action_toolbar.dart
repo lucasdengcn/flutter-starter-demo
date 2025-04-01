@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/service/snackbar_service.dart';
 import '../../../features/article/model/article_model.dart';
 
 class ArticleActionToolbar extends StatefulWidget {
@@ -48,11 +49,9 @@ class _ArticleActionToolbarState extends State<ArticleActionToolbar> {
               setState(() {
                 _isLiked = !_isLiked;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(_isLiked ? 'Article liked!' : 'Like removed'),
-                  duration: const Duration(seconds: 1),
-                ),
+              SnackBarService.showSuccess(
+                context,
+                _isLiked ? 'Article liked!' : 'Like removed',
               );
             },
           ),
@@ -66,15 +65,9 @@ class _ArticleActionToolbarState extends State<ArticleActionToolbar> {
               setState(() {
                 _isFavorited = !_isFavorited;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    _isFavorited
-                        ? 'Added to favorites!'
-                        : 'Removed from favorites',
-                  ),
-                  duration: const Duration(seconds: 1),
-                ),
+              SnackBarService.showSuccess(
+                context,
+                _isFavorited ? 'Added to favorites!' : 'Removed from favorites',
               );
             },
           ),

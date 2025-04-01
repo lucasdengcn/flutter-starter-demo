@@ -3,16 +3,22 @@ import '../../product/service/product_service.dart';
 
 class CartItem {
   final Product product;
-  final int quantity;
+  int quantity;
+  double price;
 
-  CartItem({required this.product, required this.quantity});
+  CartItem({
+    required this.product,
+    required this.quantity,
+    required this.price,
+  });
 
   double get totalPrice => product.price * quantity;
 
-  CartItem copyWith({Product? product, int? quantity}) {
+  CartItem copyWith({Product? product, int? quantity, double? price}) {
     return CartItem(
       product: product ?? this.product,
       quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
     );
   }
 
@@ -29,7 +35,11 @@ class CartItem {
     final product = await productService.getProductById(
       json['productId'] as String,
     );
-    return CartItem(product: product, quantity: json['quantity'] as int);
+    return CartItem(
+      product: product,
+      quantity: json['quantity'] as int,
+      price: json['price'] as double,
+    );
   }
 }
 

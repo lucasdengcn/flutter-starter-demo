@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../core/viewmodel/base_viewmodel.dart';
+import '../../cart/service/cart_service.dart';
 import '../model/product_model.dart';
 import '../service/product_service.dart';
 
 class ProductViewModel extends BaseViewModel {
-  final ProductService _productService = ProductService();
+  final ProductService _productService = GetIt.I<ProductService>();
+  final CartService _cartService = GetIt.I<CartService>();
   List<Product> _products = [];
   Product? _selectedProduct;
   List<Product> get products => _products;
@@ -51,14 +54,39 @@ class ProductViewModel extends BaseViewModel {
     }
   }
 
+  String? _successMessage;
+  String? get successMessage => _successMessage;
+
   Future<void> addToCart() async {
     if (_selectedProduct == null) return;
 
+    if (_quantity <= 0) {
+      setError('Quantity must be greater than 0');
+      return;
+    }
+
+    if (_quantity > _selectedProduct!.stockQuantity) {
+      setError('Not enough stock available');
+      return;
+    }
+
     await handleAsyncOperation(() async {
-      // TODO: Implement cart service integration
-      // await _cartService.addToCart(_selectedProduct!.id, _quantity);
+      await _cartService.addToCart(_selectedProduct!, _quantity);
       _quantity = 1; // Reset quantity after adding to cart
+      _successMessage = 'Added to cart successfully';
     });
+  }
+
+  @override
+  void setError(String? error) {
+    super.setError(error);
+    _successMessage = null;
+  }
+
+  void clearMessages() {
+    setError(null);
+    _successMessage = null;
+    notifyListeners();
   }
 
   void navigateToCart(BuildContext context) {

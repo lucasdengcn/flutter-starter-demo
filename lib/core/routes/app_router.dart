@@ -136,7 +136,7 @@ class AppRouter {
         name: 'cart',
         builder:
             (context, state) => ChangeNotifierProvider(
-              create: (_) => locator<CartViewModel>(),
+              create: (_) => locator<CartViewModel>()..loadUserCart(),
               child: const CartScreen(),
             ),
       ),

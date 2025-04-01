@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/service/snackbar_service.dart';
 import '../../features/cart/viewmodel/cart_viewmodel.dart';
 import 'widgets/cart_item_card.dart';
 
@@ -30,11 +31,9 @@ class CartScreen extends StatelessWidget {
                 onPressed: () {
                   viewModel.removeFromCart(productId);
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Item removed from cart'),
-                      duration: Duration(seconds: 2),
-                    ),
+                  SnackBarService.showSuccess(
+                    context,
+                    'Item removed from cart',
                   );
                 },
               ),
