@@ -145,8 +145,25 @@ Each feature has its own dedicated service classes that encapsulate these respon
 
 - **Modularization**: Code organized by features for better maintainability
 - **Singleton Pattern**: Used for services that need to maintain a single state
-- **MVVM Pattern**: Clear separation of concerns between data, logic, and UI
+- **MVVM+S Pattern**: Clear separation of concerns between data, logic, and UI
 - **Dependency Injection**: Using GetIt for service location and dependency management
+
+### MVVM Pattern
+
+The MVVM+S pattern is a design pattern used in software development to separate the user interface (View) from the business logic (Model) and the presentation logic (ViewModel) and the integration logic (Service). It provides a clear separation of concerns and promotes a more maintainable and testable codebase.
+In this project, the MVVM pattern is implemented as follows:
+
+- **Model**: Represents the data and business logic of the application. It contains the data structures and methods related to the domain.
+- **Service**: Represents the integration logic of the application. It contains the methods related to the external API.
+- **View**: Represents the user interface components and their layout. It displays the data and handles user interactions.
+- **ViewModel**: Acts as a mediator between the Model and the View. It handles the presentation logic, transforms data from the Model into a format suitable for the View, and handles user interactions.
+The MVVM pattern promotes the following principles:
+- **Separation of Concerns**: Each component (Model, View, ViewModel) has a specific responsibility and is isolated from the others.
+- **Testability**: The ViewModel is typically unit-tested, allowing for isolated testing of the presentation logic.
+- **Reusability**: The ViewModel can be reused across different Views, promoting code reuse and reducing duplication.
+- **Scalability**: The separation of concerns allows for easier scaling and maintenance of the codebase.
+- **Modularity**: The pattern promotes modularization of the codebase, making it easier to understand and maintain.
+- **Decoupling**: The ViewModel decouples the View from the Model, allowing for independent development and testing.
 
 ## Getting Started
 

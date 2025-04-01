@@ -26,25 +26,6 @@ class OrderViewModel extends BaseViewModel {
     });
   }
 
-  Future<Order?> createOrder({
-    required String userId,
-    required List<OrderItem> items,
-    required double totalAmount,
-    required OrderAddress shippingAddress,
-  }) async {
-    Order? order;
-    await handleAsyncOperation(() async {
-      order = await _orderService.createOrder(
-        userId: userId,
-        items: items,
-        totalAmount: totalAmount,
-        shippingAddress: shippingAddress,
-      );
-      _orders = [order!, ..._orders];
-    });
-    return order;
-  }
-
   Future<bool> updateOrderStatus(String orderId, OrderStatus newStatus) async {
     bool success = false;
     await handleAsyncOperation(() async {

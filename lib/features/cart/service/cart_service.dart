@@ -10,13 +10,13 @@ import '../model/cart_model.dart';
 
 class CartService {
   final LoggerService _logger = GetIt.instance<LoggerService>();
-  final ProductService _productService;
+  final ProductService _productService = GetIt.instance<ProductService>();
 
   // Add this field to store current cart in memory
   Cart? _currentCart;
   Cart? get currentCart => _currentCart;
 
-  CartService(this._productService);
+  CartService();
 
   bool get hasItems => _currentCart?.items.isNotEmpty ?? false;
 

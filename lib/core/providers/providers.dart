@@ -1,5 +1,6 @@
 import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
 import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/features/checkout/viewmodel/checkout_viewmodel.dart';
 import 'package:insurance_ws/features/video_player/viewmodel/video_player_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class AppProviders {
       ChangeNotifierProvider(create: (_) => locator<ChatViewModel>()),
       ChangeNotifierProvider(create: (_) => locator<ChartViewModel>()),
       ChangeNotifierProvider(create: (_) => locator<VideoPlayerViewModel>()),
+      ChangeNotifierProvider(create: (_) => locator<CheckoutViewModel>()),
     ];
   }
 }

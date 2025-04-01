@@ -80,6 +80,7 @@ class Order {
   final OrderAddress shippingAddress;
   final DateTime createdAt;
   final DateTime? updatedAt;
+  final String? paymentMethod;
 
   Order({
     required this.id,
@@ -90,6 +91,7 @@ class Order {
     required this.shippingAddress,
     required this.createdAt,
     this.updatedAt,
+    this.paymentMethod,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
@@ -104,6 +106,7 @@ class Order {
     OrderAddress? shippingAddress,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? paymentMethod,
   }) {
     return Order(
       id: id ?? this.id,
@@ -114,6 +117,7 @@ class Order {
       shippingAddress: shippingAddress ?? this.shippingAddress,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
     );
   }
 }

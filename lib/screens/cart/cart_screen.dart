@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/service/snackbar_service.dart';
@@ -172,8 +173,7 @@ class CartScreen extends StatelessWidget {
                       ElevatedButton(
                         onPressed:
                             cartViewModel.hasItems
-                                ? () =>
-                                    Navigator.pushNamed(context, '/checkout')
+                                ? () => context.pushNamed('checkout')
                                 : null,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 48),

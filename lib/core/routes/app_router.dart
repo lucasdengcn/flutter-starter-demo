@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:insurance_ws/features/cart/viewmodel/cart_viewmodel.dart';
 import 'package:insurance_ws/features/charts/viewmodel/chart_viewmodel.dart';
 import 'package:insurance_ws/features/chat/viewmodel/chat_viewmodel.dart';
+import 'package:insurance_ws/features/checkout/viewmodel/checkout_viewmodel.dart';
 import 'package:insurance_ws/features/order/viewmodel/order_viewmodel.dart';
 import 'package:insurance_ws/features/pdf_viewer/viewmodel/pdf_viewer_viewmodel.dart';
 import 'package:insurance_ws/features/product/viewmodel/product_viewmodel.dart';
@@ -24,6 +25,7 @@ import '../../features/signup/viewmodel/signup_viewmodel.dart';
 import '../../features/video_player/viewmodel/video_player_viewmodel.dart';
 import '../../screens/article/article_detail_screen.dart';
 import '../../screens/article/article_list_screen.dart';
+import '../../screens/checkout/checkout_screen.dart';
 import '../../screens/image_picker/image_picker_screen.dart';
 import '../../screens/prayer/prayer_screen.dart';
 import '../../screens/signin/signin_screen.dart';
@@ -189,6 +191,15 @@ class AppRouter {
             (context, state) => ChangeNotifierProvider(
               create: (_) => locator<ChartViewModel>(),
               child: const ChartScreen(),
+            ),
+      ),
+      GoRoute(
+        path: '/checkout',
+        name: 'checkout',
+        builder:
+            (context, state) => ChangeNotifierProvider(
+              create: (_) => locator<CheckoutViewModel>(),
+              child: const CheckoutScreen(),
             ),
       ),
     ],

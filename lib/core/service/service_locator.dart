@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:insurance_ws/features/checkout/service/checkout_service.dart';
+import 'package:insurance_ws/features/checkout/viewmodel/checkout_viewmodel.dart';
 
 import '../../features/article/service/article_service.dart';
 import '../../features/article/viewmodel/article_viewmodel.dart';
@@ -99,14 +101,15 @@ Future<void> setupServiceLocator() async {
     locator.registerFactory<ProductViewModel>(() => ProductViewModel());
 
     // Register Cart related dependencies
-    locator.registerLazySingleton<CartService>(
-      () => CartService(locator<ProductService>()),
-    );
+    locator.registerLazySingleton<CartService>(() => CartService());
     locator.registerFactory<CartViewModel>(() => CartViewModel());
 
     // Register Order related dependencies
     locator.registerLazySingleton<OrderService>(() => OrderService());
     locator.registerFactory<OrderViewModel>(() => OrderViewModel());
+
+    locator.registerLazySingleton<CheckoutService>(() => CheckoutService());
+    locator.registerFactory<CheckoutViewModel>(() => CheckoutViewModel());
 
     // Initialize Services if needed
     await locator<PrayerService>().init();
