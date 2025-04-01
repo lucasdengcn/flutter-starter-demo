@@ -14,6 +14,9 @@ class OrderService {
   final LoggerService _logger = GetIt.instance<LoggerService>();
   final String currentUserId = 'u1';
 
+  // Cache for current user's orders
+  final List<Order> _userOrders = [];
+
   Future<List<Order>> getOrders() async {
     try {
       final String jsonString = await rootBundle.loadString(ordersAssetPath);
@@ -28,8 +31,14 @@ class OrderService {
 
   Future<List<Order>> getOrdersByUserId() async {
     try {
+      if (_userOrders.isNotEmpty) {
+        return _userOrders;
+      }
       final orders = await getOrders();
-      return orders.where((order) => order.userId == currentUserId).toList();
+      final teamp =
+          orders.where((order) => order.userId == currentUserId).toList();
+      _userOrders.addAll(teamp);
+      return teamp;
     } catch (e) {
       _logger.e('Error getOrdersByUserId', [e, StackTrace.current]);
       throw Exception('Error finding orders: $e');
@@ -53,11 +62,17 @@ class OrderService {
   Future<Order> updateOrderStatus(String orderId, OrderStatus newStatus) async {
     try {
       final order = await getOrderById(orderId);
+      _clearCache(); // Clear cache when order status is updated
       return order.copyWith(status: newStatus, updatedAt: DateTime.now());
     } catch (e) {
       _logger.e('Error updating order status', [e, StackTrace.current]);
       throw Exception('Error updating order status: $e');
     }
+  }
+
+  // Clear the cache to force a refresh
+  void _clearCache() {
+    _userOrders.clear();
   }
 
   Future<Order> createOrder(
@@ -101,6 +116,8 @@ class OrderService {
         updatedAt: DateTime.now(),
       );
 
+      // Add the new order to the list of orders
+      _userOrders.add(order);
       _logger.i('Order created successfully: $orderId');
       return order;
     } catch (e) {

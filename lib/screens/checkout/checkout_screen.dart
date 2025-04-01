@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/service/snackbar_service.dart';
@@ -14,6 +15,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  //
   Future<void> _handleCheckout() async {
     final viewModel = context.read<CheckoutViewModel>();
     final success = await viewModel.submitCheckout();
@@ -21,11 +23,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (!mounted) return;
 
     if (success) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/orders',
-        (route) => route.isFirst,
-      );
+      context.pushReplacement('/orders');
       SnackBarService.showSuccess(context, 'Order placed successfully!');
     } else if (viewModel.errorMessage != null) {
       SnackBarService.showError(context, viewModel.errorMessage!);
